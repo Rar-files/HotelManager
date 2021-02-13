@@ -41,7 +41,7 @@
         <CommandBinding Command="{StaticResource NextCommand}" Executed="NextCommandHandler"/>
         <CommandBinding Command="{StaticResource PreviousCommand}" Executed="PreviousCommandHandler"/>
         <CommandBinding Command="{StaticResource AddCommand}" Executed="AddCommandHandler"/>
-        <!--<CommandBinding Command="{StaticResource DeleteCommand}" Executed="DeleteCommandHandler"/>-->
+        <CommandBinding Command="{StaticResource DeleteCommand}" Executed="DeleteCustomerCommandHandler"/>
         <CommandBinding Command="{StaticResource UpdateCommand}" Executed="UpdateCommandHandler"/>
         <!--<CommandBinding Command="{StaticResource CancelCommand}" Executed="CancelCommandHandler"/>-->
     </Window.CommandBindings>
@@ -55,7 +55,7 @@
             <Button Name="btnPrev" Content="◄" Command="{StaticResource PreviousCommand}" Style="{StaticResource NavButton}"/>
             <Button Name="btnNext" Content="►" Command="{StaticResource NextCommand}" Style="{StaticResource NavButton}"/>
             <Button Name="btnAdd" Content="New Customer" Command="{StaticResource AddCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
-            <!--<Button Name="btnDelete" Content="Delete Customer" Command="{StaticResource DeleteCommand}" FontSize="11" Width="120" Style="{StaticResource NavButton}"/>-->
+            <Button Name="btnDelete" Content="Delete Customer" Command="{StaticResource DeleteCommand}" FontSize="11" Width="120" Style="{StaticResource NavButton}"/>
             <Button Name="btnUpdate" Content="Commit" Command="{StaticResource UpdateCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
             <!--<Button Content="Cancel" Name="btnCancel" Command="{StaticResource CancelCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>-->
         </StackPanel>

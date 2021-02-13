@@ -105,6 +105,7 @@ namespace HotelManager
                     AdditionalInfo = newAdditionalInfoTextBox.Text
                 };
 
+                context.Customers.Add(newCustomer);
                 newCustomerGrid.Visibility = Visibility.Collapsed;
                 customerGrid.Visibility = Visibility.Visible;
             }
@@ -129,7 +130,7 @@ namespace HotelManager
                 currentCustomer.PostalCode = postalCodeTextBox.Text;
                 currentCustomer.County = countyTextBox.Text;
                 currentCustomer.Country = countryTextBox.Text;
-                currentCustomer.AdditionalInfo = additionalInfoTextBox.Text;             
+                currentCustomer.AdditionalInfo = additionalInfoTextBox.Text;
             }
 
             // Save the changes, either for a new customer, a new order  
@@ -147,15 +148,15 @@ namespace HotelManager
             newCustomerGrid.Visibility = Visibility.Visible;
 
             // Clear all the text boxes before adding a new customer. 
-            customerIDLabel.Content = 0;
-            foreach (var child in newCustomerGrid.Children)
-            {
-                var tb = child as TextBox;
-                if (tb != null)
-                {
-                    tb.Text = "";
-                }
-            }
+            //customerIDLabel.Content = 0;
+            //foreach (var child in newCustomerGrid.Children)
+            //{
+            //    var tb = child as TextBox;
+            //    if (tb != null)
+            //    {
+            //        tb.Text = "";
+            //    }
+            //}
         }
     }
 }
