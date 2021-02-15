@@ -12,28 +12,37 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Data.Entity;
 
 namespace HotelManager
 {
     /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
+    /// Logika interakcji dla klasy MainPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainPage : Page
     {
 
-
-        public MainWindow()
+        public MainPage()
         {
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
             // customersViewSource.Źródło = [ogólne źródło danych]
-            var mainPage = new MainPage();
-            Content = mainPage;
+        }
+
+        private void AddReservationHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            //var reservation = new ReservationWindow();
+            //reservation.Show();
+        }
+
+        private void AddCustomerHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            var customer = new CustomerPage();
+            var window = (Window)this.Parent;
+            window.Content = customer;
         }
     }
 }

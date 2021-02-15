@@ -71,6 +71,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomerPage.xaml.cs">
+      <DependentUpon>CustomerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Customers.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
@@ -80,19 +83,16 @@
     <Compile Include="Employees.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EmployeeWindow.xaml.cs">
-      <DependentUpon>EmployeeWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="HotelDBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Reservations.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ReservationWindow.xaml.cs">
-      <DependentUpon>ReservationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
@@ -100,14 +100,15 @@
     <Compile Include="RoomsClass.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RoomWindow.xaml.cs">
-      <DependentUpon>RoomWindow.xaml</DependentUpon>
-    </Compile>
+    <Page Include="CustomerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EmployeeWindow.xaml">
+    <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,14 +134,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ReservationWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="RoomWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
