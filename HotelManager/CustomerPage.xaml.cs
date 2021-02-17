@@ -68,6 +68,8 @@ namespace HotelManager
                             where c.CustomerID == customers.CustomerID
                             select c).FirstOrDefault();
 
+            int currentID = customer.CustomerID;
+
             if (customer != null)
             {
                 foreach (var reserv in customer.Reservations.ToList())
@@ -76,6 +78,8 @@ namespace HotelManager
                 }
                 context.Customers.Remove(customer);
             }
+
+            context.Database.ExecuteSqlCommand($"DBCC CHECKIDENT('Customers', RESEED, {currentID-1})");
             context.SaveChanges();
             custViewSource.View.Refresh();
         }
@@ -165,6 +169,18 @@ namespace HotelManager
             var main = new MainPage();
             var window = (Window)this.Parent;
             window.Content = main;
+        }
+
+        private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if(int.TryParse(customerSearch.Text,out int ID))
+            {
+                var customer = (from c in context.Customers
+                                where c.CustomerID == ID
+                                select c).FirstOrDefault();
+
+                var searchcust = new CustomerPage(customer);
+            }
         }
 
     }
