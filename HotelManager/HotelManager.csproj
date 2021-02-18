@@ -80,6 +80,7 @@
     <Compile Include="CustomerWindow.xaml.cs">
       <DependentUpon>CustomerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataGridTools.cs" />
     <Compile Include="Employees.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>

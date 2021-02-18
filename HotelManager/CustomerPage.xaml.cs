@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.Entity;
+
 
 namespace HotelManager
 {
@@ -38,6 +40,8 @@ namespace HotelManager
             custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
             reservViewSource = ((CollectionViewSource)(this.FindResource("customersReservationsViewSource")));
             DataContext = this;
+            context.Customers.Load();
+            custViewSource.Source = context.Customers.Local;
             custViewSource.View.MoveCurrentTo(customer);
         }
 
@@ -45,6 +49,7 @@ namespace HotelManager
         {
             // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
             // customersViewSource.Źródło = [ogólne źródło danych]
+            context.Customers.Load();
             custViewSource.Source = context.Customers.Local;
         }
 
@@ -119,8 +124,7 @@ namespace HotelManager
                 // Order ID is auto-generated so we don't set it here.  
                 // For CustomerID, address, etc we use the values from current customer.  
                 // User can modify these in the datagrid after the order is entered.  
-
-                Customers currentCustomer = (Customers)custViewSource.View.CurrentItem;
+                var currentCustomer = custViewSource.View.CurrentItem as Customers;
 
                 currentCustomer.FirstName = firstNameTextBox.Text;
                 currentCustomer.LastName = lastNameTextBox.Text;
@@ -154,14 +158,14 @@ namespace HotelManager
 
             // Clear all the text boxes before adding a new customer. 
             //customerIDLabel.Content = 0;
-            //foreach (var child in newCustomerGrid.Children)
-            //{
-            //    var tb = child as TextBox;
-            //    if (tb != null)
-            //    {
-            //        tb.Text = "";
-            //    }
-            //}
+            foreach (var child in newCustomerGrid.Children)
+            {
+                var tb = child as TextBox;
+                if (tb != null)
+                {
+                    tb.Text = "";
+                }
+            }
         }
 
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
@@ -175,13 +179,59 @@ namespace HotelManager
         {
             if(int.TryParse(customerSearch.Text,out int ID))
             {
-                var customer = (from c in context.Customers
-                                where c.CustomerID == ID
-                                select c).FirstOrDefault();
+                SearchCustomersList.Visibility = Visibility.Visible;
+                var customers = (from c in context.Customers
+                                 orderby c.LastName
+                                 select new { Customer = (c.LastName + " " + c.FirstName), ID = c.CustomerID }); ;
 
-                var searchcust = new CustomerPage(customer);
+                var customersList = customers.ToList();
+                foreach (var e in customers.ToList())
+                {
+                    if(!CheckCustomerID(e.ID,ID))
+                    {
+                        customersList.Remove(e);
+                    }
+                }
+
+                SearchCustomersList.ItemsSource = customersList;
             }
         }
 
+        private void DataGridSearchRowClick(object sender, MouseButtonEventArgs e)
+        {
+            Customers customer;
+            int ID;
+            if (!int.TryParse((e.OriginalSource as TextBlock).Text, out ID))
+            {
+                var row = sender as DataGridRow;
+
+                var cell = DataGridTools.GetCell(SearchCustomersList, row, 1);
+                cell.IsEnabled = false;
+
+                ID = int.Parse((cell.Content as TextBlock).Text);
+            }
+
+            customer = context.Customers.Find(ID);
+
+            SearchCustomersList.Visibility = Visibility.Collapsed;
+            customerSearch.Text = "Customer";
+            var custPage = new CustomerPage(customer);
+        }
+
+        private bool CheckCustomerID(int test, int target)
+        {
+            char[] tests = test.ToString().ToCharArray();
+            char[] targets = target.ToString().ToCharArray();
+            bool checkFlag = true;
+            for(int i = 0; i<targets.Length & checkFlag; i++)
+            {
+                if (tests[i] != targets[i]) checkFlag = false;
+            }
+            return checkFlag;
+        }
+
+
     }
+
+    
 }

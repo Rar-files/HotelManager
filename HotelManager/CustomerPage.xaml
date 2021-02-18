@@ -9,8 +9,9 @@
       Title="CustomerPage"
       Loaded="Page_Loaded">
 
+    <!--d:DesignSource="{d:DesignInstance {x:Type local:Customers}, CreateList=True}"-->
+
     <Page.Resources>
-        <CollectionViewSource x:Key="customersViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Customers}, CreateList=True}"/>
         <CollectionViewSource x:Key="customersReservationsViewSource" Source="{Binding Reservations, Source={StaticResource customersViewSource}}"/>
         <RoutedUICommand x:Key="NextCommand" Text="Next"/>
         <RoutedUICommand x:Key="PreviousCommand" Text="Previous"/>
@@ -255,6 +256,14 @@
                 <DataGridTextColumn x:Name="reservIDColumn" Binding="{Binding ReservID}" Header="Reserv ID" Width="SizeToHeader"/>
                 <DataGridTextColumn x:Name="roomColumn" Binding="{Binding Room}" Header="Room" Width="SizeToHeader"/>
             </DataGrid.Columns>
+        </DataGrid>
+        
+        <DataGrid x:Name="SearchCustomersList" HorizontalAlignment="Left" MaxHeight="100" Margin="412,21,0,0" VerticalAlignment="Top" Width="120"  Grid.RowSpan="3" Visibility="Collapsed" Height="Auto" CanUserAddRows="False" CanUserDeleteRows="True">
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseLeftButtonDown" Handler="DataGridSearchRowClick"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
         </DataGrid>
     </Grid>
 </Page>
