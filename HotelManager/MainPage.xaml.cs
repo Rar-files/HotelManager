@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.Entity;
 
 namespace HotelManager
 {
@@ -21,16 +22,21 @@ namespace HotelManager
     public partial class MainPage : Page
     {
         HotelDBEntities context = new HotelDBEntities();
+        CollectionViewSource custViewSource;
 
         public MainPage()
         {
             InitializeComponent();
+            custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
+            DataContext = this;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
             // customersViewSource.Źródło = [ogólne źródło danych]
+            context.Customers.Load();
+            custViewSource.Source = context.Customers.Local;
         }
 
         private void AddReservationHandler(object sender, ExecutedRoutedEventArgs e)

@@ -85,7 +85,7 @@
             <TextBox x:Name="employerSearch" Grid.Column="4" Text="Employer" Style="{StaticResource SearchTextBox}"/>
         </Grid>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="2,2,2,0" Height="36" VerticalAlignment="Top" Background="Gainsboro" DataContext="{StaticResource customersViewSource}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="2,2,2,0" Height="36" VerticalAlignment="Top" Background="Azure" DataContext="{StaticResource customersViewSource}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
             <Button Name="btnPrev" Content="◄" Command="{StaticResource PreviousCommand}" Style="{StaticResource NavButton}"/>
             <Button Name="btnNext" Content="►" Command="{StaticResource NextCommand}" Style="{StaticResource NavButton}"/>
             <Button Name="btnAdd" Content="New Customer" Command="{StaticResource AddCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>

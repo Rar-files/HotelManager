@@ -25,6 +25,7 @@ namespace HotelManager
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource custViewSource;
         CollectionViewSource reservViewSource;
+        Customers initial = null;
 
         public CustomerPage()
         {
@@ -40,9 +41,7 @@ namespace HotelManager
             custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
             reservViewSource = ((CollectionViewSource)(this.FindResource("customersReservationsViewSource")));
             DataContext = this;
-            context.Customers.Load();
-            custViewSource.Source = context.Customers.Local;
-            custViewSource.View.MoveCurrentTo(customer);
+            initial = customer;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,6 +50,8 @@ namespace HotelManager
             // customersViewSource.Źródło = [ogólne źródło danych]
             context.Customers.Load();
             custViewSource.Source = context.Customers.Local;
+            if(initial != null)
+                custViewSource.View.MoveCurrentTo(initial);
         }
 
         private void PreviousCommandHandler(object sender, ExecutedRoutedEventArgs e)
@@ -199,23 +200,27 @@ namespace HotelManager
 
         private void DataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
-            Customers customer;
-            int ID;
-            if (!int.TryParse((e.OriginalSource as TextBlock).Text, out ID))
+            var txt = (e.OriginalSource as TextBlock).Text;
+            if (txt != null)
             {
-                var row = sender as DataGridRow;
+                Customers customer;
+                int ID;
+                if (!int.TryParse(txt, out ID))
+                {
+                    var row = sender as DataGridRow;
 
-                var cell = DataGridTools.GetCell(SearchCustomersList, row, 1);
-                cell.IsEnabled = false;
+                    var cell = DataGridTools.GetCell(SearchCustomersList, row, 1);
+                    cell.IsEnabled = false;
 
-                ID = int.Parse((cell.Content as TextBlock).Text);
+                    ID = int.Parse((cell.Content as TextBlock).Text);
+                }
+
+                customer = context.Customers.Find(ID);
+
+                SearchCustomersList.Visibility = Visibility.Collapsed;
+                customerSearch.Text = "Customer";
+                new CustomerPage(customer);
             }
-
-            customer = context.Customers.Find(ID);
-
-            SearchCustomersList.Visibility = Visibility.Collapsed;
-            customerSearch.Text = "Customer";
-            var custPage = new CustomerPage(customer);
         }
 
         private bool CheckCustomerID(int test, int target)
