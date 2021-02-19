@@ -77,9 +77,6 @@
     <Compile Include="Customers.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CustomerWindow.xaml.cs">
-      <DependentUpon>CustomerWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DataGridTools.cs" />
     <Compile Include="Employees.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
@@ -92,6 +89,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewCustomerWindow.xaml.cs">
+      <DependentUpon>NewCustomerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Reservations.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
@@ -102,10 +102,6 @@
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
     <Page Include="CustomerPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,6 +131,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NewCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

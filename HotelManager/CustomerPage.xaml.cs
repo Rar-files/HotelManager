@@ -54,16 +54,6 @@ namespace HotelManager
                 custViewSource.View.MoveCurrentTo(initial);
         }
 
-        private void PreviousCommandHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            custViewSource.View.MoveCurrentToPrevious();
-        }
-
-        private void NextCommandHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            custViewSource.View.MoveCurrentToNext();
-        }
-
         private void DeleteCustomerCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             // If existing window is visible, delete the customer and all their orders.  
@@ -94,39 +84,14 @@ namespace HotelManager
         // or edits made to the existing customer form.  
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            if (newCustomerGrid.IsVisible)
-            {
-                // Create a new object because the old one  
-                // is being tracked by EF now.  
-                Customers newCustomer = new Customers
-                {
-                    FirstName = newFirstNameTextBox.Text,
-                    LastName = newLastNameTextBox.Text,
-                    Email = newEmailTextBox.Text,
-                    Phone = newPhoneTextBox.Text,
-                    PESEL = newPeselTextBox.Text,
-                    PIN = newPinTextBox.Text,
-                    IDCardSeries = newIdCardSeriesTextBox.Text,
-                    CarNumber = newCarNumberTextBox.Text,
-                    Address = newAddressTextBox.Text,
-                    City = newCityTextBox.Text,
-                    PostalCode = newPostalCodeTextBox.Text,
-                    County = newCountyTextBox.Text,
-                    Country = newCountryTextBox.Text,
-                    AdditionalInfo = newAdditionalInfoTextBox.Text
-                };
 
-                context.Customers.Add(newCustomer);
-                newCustomerGrid.Visibility = Visibility.Collapsed;
-                customerGrid.Visibility = Visibility.Visible;
-            }
-            else if (customerGrid.IsVisible)
-            {
-                // Order ID is auto-generated so we don't set it here.  
-                // For CustomerID, address, etc we use the values from current customer.  
-                // User can modify these in the datagrid after the order is entered.  
-                var currentCustomer = custViewSource.View.CurrentItem as Customers;
+            // Order ID is auto-generated so we don't set it here.  
+            // For CustomerID, address, etc we use the values from current customer.  
+            // User can modify these in the datagrid after the order is entered.  
+            var currentCustomer = custViewSource.View.CurrentItem as Customers;
 
+            if (currentCustomer != null)
+            {
                 currentCustomer.FirstName = firstNameTextBox.Text;
                 currentCustomer.LastName = lastNameTextBox.Text;
                 currentCustomer.Email = emailTextBox.Text;
@@ -143,6 +108,7 @@ namespace HotelManager
                 currentCustomer.AdditionalInfo = additionalInfoTextBox.Text;
             }
 
+
             // Save the changes, either for a new customer, a new order  
             // or an edit to an existing customer or order.
             context.SaveChanges();
@@ -153,20 +119,7 @@ namespace HotelManager
         // saved when user clicks Commit.  
         private void AddCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            customerGrid.Visibility = Visibility.Collapsed;
-            //newOrderGrid.Visibility = Visibility.Collapsed;
-            newCustomerGrid.Visibility = Visibility.Visible;
-
-            // Clear all the text boxes before adding a new customer. 
-            //customerIDLabel.Content = 0;
-            foreach (var child in newCustomerGrid.Children)
-            {
-                var tb = child as TextBox;
-                if (tb != null)
-                {
-                    tb.Text = "";
-                }
-            }
+            new NewCustomerWindow().Show();
         }
 
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
