@@ -1,30 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data.Entity;
 
 namespace HotelManager
 {
     /// <summary>
-    /// Logika interakcji dla klasy MainPage.xaml
+    /// Logika interakcji dla klasy ReservationPage.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class ReservationPage : Page
     {
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource custViewSource;
+        Customers currentCustomer;
 
-        public MainPage()
+        public ReservationPage()
         {
             InitializeComponent();
             custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
@@ -33,23 +27,8 @@ namespace HotelManager
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
-            // customersViewSource.Źródło = [ogólne źródło danych]
             context.Customers.Load();
             custViewSource.Source = context.Customers.Local;
-        }
-
-        private void AddReservationHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            var reservation = new NewReservationWindow();
-            reservation.Show();
-        }
-
-        private void AddCustomerHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            var custPage = new CustomerPage();
-            var window = (Window)this.Parent;
-            window.Content = custPage;
         }
 
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
@@ -76,25 +55,25 @@ namespace HotelManager
 
         private void DataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
-            Customers customer;
-            int ID;
-            if (!int.TryParse((e.OriginalSource as TextBlock).Text, out ID))
+            var txt = (e.OriginalSource as TextBlock).Text;
+            if (txt != null)
             {
-                var row = sender as DataGridRow;
+                int ID;
+                if (!int.TryParse(txt, out ID))
+                {
+                    var row = sender as DataGridRow;
 
-                var cell = DataGridTools.GetCell(SearchCustomersList, row, 1);
-                cell.IsEnabled = false;
+                    var cell = DataGridTools.GetCell(SearchCustomersList, row, 1);
+                    cell.IsEnabled = false;
 
-                ID = int.Parse((cell.Content as TextBlock).Text);
+                    ID = int.Parse((cell.Content as TextBlock).Text);
+                }
+
+                currentCustomer = context.Customers.Find(ID);
+                SearchCustomersList.Visibility = Visibility.Collapsed;
+                customerSearch.Text = "FindCustomer";
+                customerLabelName.Content = currentCustomer.LastName + " " + currentCustomer.FirstName;
             }
-
-            customer = context.Customers.Find(ID);
-
-            SearchCustomersList.Visibility = Visibility.Collapsed;
-            customerSearch.Text = "Customer";
-            var custPage = new CustomerPage(customer);
-            var window = (Window)this.Parent;
-            window.Content = custPage;
         }
 
         private bool CheckCustomerID(int test, int target)

@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data.Entity;
 
 
@@ -131,7 +124,7 @@ namespace HotelManager
 
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
-            if(int.TryParse(customerSearch.Text,out int ID))
+            if (int.TryParse(customerSearch.Text, out int ID))
             {
                 SearchCustomersList.Visibility = Visibility.Visible;
                 var customers = (from c in context.Customers
@@ -141,7 +134,7 @@ namespace HotelManager
                 var customersList = customers.ToList();
                 foreach (var e in customers.ToList())
                 {
-                    if(!CheckCustomerID(e.ID,ID))
+                    if (!CheckCustomerID(e.ID, ID))
                     {
                         customersList.Remove(e);
                     }
@@ -181,7 +174,7 @@ namespace HotelManager
             char[] tests = test.ToString().ToCharArray();
             char[] targets = target.ToString().ToCharArray();
             bool checkFlag = true;
-            for(int i = 0; i<targets.Length & checkFlag; i++)
+            for (int i = 0; i < targets.Length & checkFlag; i++)
             {
                 if (tests[i] != targets[i]) checkFlag = false;
             }

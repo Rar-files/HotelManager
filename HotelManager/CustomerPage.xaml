@@ -55,7 +55,7 @@
     </Page.CommandBindings>
 
 
-    <Grid DataContext="{StaticResource customersReservationsViewSource}">
+    <Grid DataContext="{StaticResource customersReservationsViewSource}" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

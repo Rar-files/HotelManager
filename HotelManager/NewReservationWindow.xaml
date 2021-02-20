@@ -1,0 +1,122 @@
+﻿<Window x:Class="HotelManager.NewReservationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HotelManager"
+        mc:Ignorable="d"
+        Title="NewReservationWindow" Height="275" Width="410"
+      Loaded="Page_Loaded">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="reservationsViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Reservations}, CreateList=True}"/>
+        <RoutedUICommand x:Key="UpdateCommand" Text="Update"/>
+        <RoutedUICommand x:Key="CancelCommand" Text="Cancel"/>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource UpdateCommand}" Executed="UpdateCommandHandler"/>
+        <CommandBinding Command="{StaticResource CancelCommand}" Executed="CancelCommandHandler"/>
+    </Window.CommandBindings>
+
+    <Grid Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="chooseCustomer" Grid.Row="0" DataContext="{StaticResource reservationsViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Customer:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+            <TextBox x:Name="customerSearch" HorizontalAlignment="Left" Grid.Column="1" Height="22" Text="FindCustomer" Width="120" VerticalAlignment="Center" TextChanged="CustomerSearchTextChanged"/>
+            <Label x:Name="customerLabelName" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+        </Grid>
+
+        <DataGrid x:Name="SearchCustomersList" HorizontalAlignment="Left" Margin="101,49,0,0" VerticalAlignment="Top">
+
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGrid}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="MaxHeight" Value="100"/>
+                    <Setter Property="Height" Value="auto"/>
+                    <Setter Property="CanUserAddRows" Value="False"/>
+                    <Setter Property="CanUserDeleteRows" Value="False"/>
+                    <Setter Property="CanUserResizeColumns" Value="False"/>
+                    <Setter Property="CanUserResizeRows" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridRowHeader}">
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="99"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseLeftButtonDown" Handler="DataGridSearchRowClick"/>
+
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
+
+        <Grid x:Name="chooseRoom" Grid.Row="1" DataContext="{StaticResource reservationsViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Room:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+            <Label x:Name="roomLabel" Content="{Binding Room}" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid x:Name="chooseEmploye" Grid.Row="2" DataContext="{StaticResource reservationsViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Add By:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="addByTextBlock" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="0" Text="{Binding AddBy}" VerticalAlignment="Center"/>
+        </Grid>
+
+        <StackPanel x:Name="bookingTime" Grid.Row="3" DataContext="{StaticResource reservationsViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
+            <Label Content="Booking From:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+            <DatePicker x:Name="bookingFromDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="0" SelectedDate="{Binding BookingFrom, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+            <Label Content="To:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+            <DatePicker x:Name="bookingToDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="0" SelectedDate="{Binding BookingTo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <Label Content="Additional Info:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+        <TextBox x:Name="additionalInfoTextBox" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Height="45" Width="200" Margin="4,0,2,2" Text="{Binding AdditionalInfo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="2,4,4,4" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" DataContext="{StaticResource customersViewSource}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <Button Name="btnUpdate" Content="Commit" Command="{StaticResource UpdateCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
+            <Button Content="Cancel" Name="btnCancel" Command="{StaticResource CancelCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

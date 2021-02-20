@@ -8,5 +8,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <CollectionViewSource x:Key="customersViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Customers}, CreateList=True}" />
+        <CollectionViewSource x:Key="reservationsViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Reservations}, CreateList=True}"/>
+
     </Application.Resources>
 </Application>

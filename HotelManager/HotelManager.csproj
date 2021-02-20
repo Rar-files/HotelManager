@@ -81,6 +81,9 @@
     <Compile Include="Employees.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EmployePage.xaml.cs">
+      <DependentUpon>EmployePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HotelDBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,8 +95,17 @@
     <Compile Include="NewCustomerWindow.xaml.cs">
       <DependentUpon>NewCustomerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewReservationWindow.xaml.cs">
+      <DependentUpon>NewReservationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReservationPage.xaml.cs">
+      <DependentUpon>ReservationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Reservations.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoomPage.xaml.cs">
+      <DependentUpon>RoomPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
@@ -102,6 +114,10 @@
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
     <Page Include="CustomerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EmployePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,6 +148,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewReservationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReservationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RoomPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
