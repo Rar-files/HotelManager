@@ -9,31 +9,31 @@
       Title="MainPage">
 
     <Page.Resources>
-        <RoutedCommand x:Key="addReservation"/>
-        <RoutedCommand x:Key="addCustomer"/>
-        <Style x:Key="SearchTextBox" TargetType="TextBox">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="Margin" Value="0,2"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Azure"/>
-        </Style>
-        <Style x:Key="NavigateButton" TargetType="Button">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="Azure"/>
-            <Setter Property="Width" Value="370"/>
-            <Setter Property="Background" Value="#1D2529"/>
-            <Setter Property="FontSize" Value="32"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0"/>
-        </Style>
-    </Page.Resources>
-    <Page.CommandBindings>
-        <CommandBinding Command="{StaticResource addCustomer}" Executed="AddCustomerHandler"/>
-        <CommandBinding Command="{StaticResource addReservation}" Executed="AddReservationHandler"/>
-    </Page.CommandBindings>
+            <RoutedCommand x:Key="addReservation"/>
+            <RoutedCommand x:Key="addCustomer"/>
+            <Style x:Key="SearchTextBox" TargetType="TextBox">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="120"/>
+                <Setter Property="Height" Value="20"/>
+                <Setter Property="Margin" Value="0,2"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Background" Value="Azure"/>
+            </Style>
+            <Style x:Key="NavigateButton" TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="Azure"/>
+                <Setter Property="Width" Value="370"/>
+                <Setter Property="Background" Value="#1D2529"/>
+                <Setter Property="FontSize" Value="32"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0"/>
+            </Style>
+        </Page.Resources>
+        <Page.CommandBindings>
+            <CommandBinding Command="{StaticResource addCustomer}" Executed="AddCustomerHandler"/>
+            <CommandBinding Command="{StaticResource addReservation}" Executed="AddReservationHandler"/>
+        </Page.CommandBindings>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -109,7 +109,7 @@
                 </Style>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="Background" Value="Azure"/>
-                    <Setter Property="Width" Value="99"/>
+                    <Setter Property="Width" Value="90"/>
                 </Style>
             </DataGrid.Resources>
 

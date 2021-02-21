@@ -28,13 +28,13 @@ namespace HotelManager
             DataContext = this;
         }
 
-        public CustomerPage(Customers customer)
+        public CustomerPage(int customerID)
         {
             InitializeComponent();
             custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
             reservViewSource = ((CollectionViewSource)(this.FindResource("customersReservationsViewSource")));
             DataContext = this;
-            initial = customer;
+            initial = context.Customers.Find(customerID);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -117,9 +117,9 @@ namespace HotelManager
 
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            var main = new MainPage();
+            var mainPage = new MainPage();
             var window = (Window)this.Parent;
-            window.Content = main;
+            window.Content = mainPage;
         }
 
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
@@ -134,7 +134,14 @@ namespace HotelManager
                 var customersList = customers.ToList();
                 foreach (var e in customers.ToList())
                 {
-                    if (!CheckCustomerID(e.ID, ID))
+                    try
+                    {
+                        if (!CheckCustomerID(e.ID, ID))
+                        {
+                            customersList.Remove(e);
+                        }
+                    }
+                    catch (IndexOutOfRangeException)
                     {
                         customersList.Remove(e);
                     }
@@ -149,7 +156,6 @@ namespace HotelManager
             var txt = (e.OriginalSource as TextBlock).Text;
             if (txt != null)
             {
-                Customers customer;
                 int ID;
                 if (!int.TryParse(txt, out ID))
                 {
@@ -161,11 +167,12 @@ namespace HotelManager
                     ID = int.Parse((cell.Content as TextBlock).Text);
                 }
 
-                customer = context.Customers.Find(ID);
 
                 SearchCustomersList.Visibility = Visibility.Collapsed;
                 customerSearch.Text = "Customer";
-                new CustomerPage(customer);
+                var custPage = new CustomerPage(ID);
+                var window = (Window)this.Parent;
+                window.Content = custPage;
             }
         }
 

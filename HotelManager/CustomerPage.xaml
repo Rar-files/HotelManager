@@ -9,8 +9,6 @@
       Title="CustomerPage"
       Loaded="Page_Loaded">
 
-    <!--d:DesignSource="{d:DesignInstance {x:Type local:Customers}, CreateList=True}"-->
-
     <Page.Resources>
         <CollectionViewSource x:Key="customersReservationsViewSource" Source="{Binding Reservations, Source={StaticResource customersViewSource}}"/>
         <RoutedUICommand x:Key="AddCommand" Text="Add"/>
@@ -194,7 +192,7 @@
 
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGrid}">
-                    <Setter Property="Background" Value="Azure"/>
+                    <Setter Property="Background" Value="White"/>
                     <Setter Property="Width" Value="200"/>
                     <Setter Property="MaxHeight" Value="100"/>
                     <Setter Property="Height" Value="auto"/>
@@ -205,11 +203,11 @@
                     <Setter Property="Visibility" Value="Collapsed"/>
                 </Style>
                 <Style TargetType="{x:Type DataGridRowHeader}">
-                    <Setter Property="Background" Value="Azure"/>
+                    <Setter Property="Background" Value="White"/>
                 </Style>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Background" Value="Azure"/>
-                    <Setter Property="Width" Value="99"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="90"/>
                 </Style>
             </DataGrid.Resources>
 
@@ -217,7 +215,7 @@
                 <Style TargetType="DataGridRow">
                     <EventSetter Event="MouseLeftButtonDown" Handler="DataGridSearchRowClick"/>
 
-                    <Setter Property="Background" Value="Azure"/>
+                    <Setter Property="Background" Value="White"/>
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>

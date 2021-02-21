@@ -17,8 +17,8 @@ namespace HotelManager
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource custViewSource;
         Customers currentCustomer;
-        Employees currentEmployees;
-        Rooms currentRoom;
+        //Employees currentEmployees;
+        //Rooms currentRoom;
 
         public NewReservationWindow()
         {
@@ -38,8 +38,8 @@ namespace HotelManager
             Reservations newReservation = new Reservations
             {
                 Customer = currentCustomer.CustomerID,
-                AddBy = currentEmployees.EmployeeID,
-                Room = currentRoom.RoomID,
+                //AddBy = currentEmployees.EmployeeID,
+                //Room = currentRoom.RoomID,
                 BookingFrom = bookingFromDatePicker.DisplayDate,
                 BookingTo = bookingToDatePicker.DisplayDate,
                 AdditionalInfo = additionalInfoTextBox.Text
@@ -68,7 +68,14 @@ namespace HotelManager
                 var customersList = customers.ToList();
                 foreach (var e in customers.ToList())
                 {
-                    if (!CheckCustomerID(e.ID, ID))
+                    try
+                    {
+                        if (!CheckCustomerID(e.ID, ID))
+                        {
+                            customersList.Remove(e);
+                        }
+                    }
+                    catch (IndexOutOfRangeException)
                     {
                         customersList.Remove(e);
                     }
@@ -106,7 +113,7 @@ namespace HotelManager
             char[] tests = test.ToString().ToCharArray();
             char[] targets = target.ToString().ToCharArray();
             bool checkFlag = true;
-            for (int i = 0; i < targets.Length & checkFlag; i++)
+            for (int i = 0; i < targets.Length & i < tests.Length & checkFlag; i++)
             {
                 if (tests[i] != targets[i]) checkFlag = false;
             }

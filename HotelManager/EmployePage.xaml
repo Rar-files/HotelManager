@@ -7,8 +7,75 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="EmployePage">
+    <Page.Resources>
+        <CollectionViewSource x:Key="roomsViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Rooms}, CreateList=True}"/>
+        <CollectionViewSource x:Key="roomsClassViewSource" d:DesignSource="{d:DesignInstance {x:Type local:RoomsClass}, CreateList=True}"/>
+    </Page.Resources>
 
-    <Grid>
-        
+    <Grid Background="White" DataContext="{StaticResource roomsViewSource}" Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+
+        <Label Content="Room ID:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="roomIDTextBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0" Text="{Binding RoomID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+        <Label Content="Number:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center"/>
+        <TextBox x:Name="numberTextBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" Text="{Binding Number, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+        <Label DataContext="{StaticResource roomsClassViewSource}" Content="Class Name:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox x:Name="classNameTextBox" DataContext="{StaticResource roomsClassViewSource}" Grid.Column="1" Grid.Row="2" Text="{Binding ClassName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+        <Grid DataContext="{StaticResource roomsClassViewSource}" Background="#1D2529" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6">
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Stars Standard:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="starsStandardTextBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding StarsStandard, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+            <Label Content="Bed Count:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="bedCountTextBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding BedCount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+            <Label Content="Flat Area:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="flatAreaTextBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding FlatArea, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+            <Label Content="Price:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="priceTextBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Price, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+            <Label Content="Additional Info:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="additionalInfoTextBox1" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="{Binding AdditionalInfo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+        </Grid>
+
+        <Label Content="for The Disabled:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center"/>
+        <CheckBox x:Name="forTheDisabledCheckBox" Content="" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" IsChecked="{Binding forTheDisabled, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
+        <Label Content="Additional Info:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Center"/>
+        <TextBox x:Name="additionalInfoTextBox" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="5" Text="{Binding AdditionalInfo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+
     </Grid>
 </Page>
