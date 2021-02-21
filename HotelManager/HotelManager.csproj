@@ -71,7 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomerPage.xaml.cs">
+    <Compile Include="ViewElements\CustomerPage.xaml.cs">
       <DependentUpon>CustomerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Customers.cs">
@@ -81,7 +81,7 @@
     <Compile Include="Employees.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EmployePage.xaml.cs">
+    <Compile Include="ViewElements\EmployePage.xaml.cs">
       <DependentUpon>EmployePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="HotelDBModel.cs">
@@ -89,25 +89,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="ViewElements\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewCustomerWindow.xaml.cs">
+    <Compile Include="NewElementsWindows\NewCustomerWindow.xaml.cs">
       <DependentUpon>NewCustomerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewEmpWindow.xaml.cs">
+    <Compile Include="NewElementsWindows\NewEmpWindow.xaml.cs">
       <DependentUpon>NewEmpWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewReservationWindow.xaml.cs">
+    <Compile Include="NewElementsWindows\NewReservationWindow.xaml.cs">
       <DependentUpon>NewReservationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewRoomClassWindow.xaml.cs">
+    <Compile Include="NewElementsWindows\NewRoomClassWindow.xaml.cs">
       <DependentUpon>NewRoomClassWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewRoomWindow.xaml.cs">
+    <Compile Include="NewElementsWindows\NewRoomWindow.xaml.cs">
       <DependentUpon>NewRoomWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ReservationPage.xaml.cs">
+    <Compile Include="ViewElements\ReservationPage.xaml.cs">
       <DependentUpon>ReservationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reservations.cs">
@@ -119,18 +119,18 @@
     <Compile Include="RoomsClass.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RoomWindow.xaml.cs">
+    <Compile Include="ViewElements\RoomWindow.xaml.cs">
       <DependentUpon>RoomWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="CustomerPage.xaml">
+    <Page Include="ViewElements\CustomerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EmployePage.xaml">
+    <Page Include="ViewElements\EmployePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="ViewElements\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -156,31 +156,31 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewCustomerWindow.xaml">
+    <Page Include="NewElementsWindows\NewCustomerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewEmpWindow.xaml">
+    <Page Include="NewElementsWindows\NewEmpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewReservationWindow.xaml">
+    <Page Include="NewElementsWindows\NewReservationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewRoomClassWindow.xaml">
+    <Page Include="NewElementsWindows\NewRoomClassWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewRoomWindow.xaml">
+    <Page Include="NewElementsWindows\NewRoomWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ReservationPage.xaml">
+    <Page Include="ViewElements\ReservationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RoomWindow.xaml">
+    <Page Include="ViewElements\RoomWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,7 +240,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NewElementsWindows\" />
+    <Folder Include="MainAppElements\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
