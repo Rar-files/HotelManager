@@ -66,9 +66,7 @@ namespace HotelManager
         }
 
 
-        /// <summary>
-        /// SearchBar
-        /// </summary>
+        //SearchBar
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
 
