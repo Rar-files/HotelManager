@@ -95,8 +95,17 @@
     <Compile Include="NewCustomerWindow.xaml.cs">
       <DependentUpon>NewCustomerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewEmpWindow.xaml.cs">
+      <DependentUpon>NewEmpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewReservationWindow.xaml.cs">
       <DependentUpon>NewReservationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewRoomClassWindow.xaml.cs">
+      <DependentUpon>NewRoomClassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewRoomWindow.xaml.cs">
+      <DependentUpon>NewRoomWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ReservationPage.xaml.cs">
       <DependentUpon>ReservationPage.xaml</DependentUpon>
@@ -104,14 +113,14 @@
     <Compile Include="Reservations.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RoomPage.xaml.cs">
-      <DependentUpon>RoomPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Rooms.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RoomsClass.cs">
       <DependentUpon>HotelDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoomWindow.xaml.cs">
+      <DependentUpon>RoomWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="CustomerPage.xaml">
       <SubType>Designer</SubType>
@@ -151,7 +160,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="NewEmpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NewReservationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRoomClassWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRoomWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,7 +180,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RoomPage.xaml">
+    <Page Include="RoomWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

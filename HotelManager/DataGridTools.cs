@@ -65,5 +65,17 @@ namespace HotelManager
             return GetCell(grid, rowContainer, column);
         }
 
+        public static bool CheckString(string test, string target)
+        {
+            char[] tests = test.ToCharArray();
+            char[] targets = target.ToCharArray();
+            bool checkFlag = true;
+            for (int i = 0; i < targets.Length & checkFlag; i++)
+            {
+                if (tests[i] != targets[i]) checkFlag = false;
+            }
+            return checkFlag;
+        }
+
     }
 }

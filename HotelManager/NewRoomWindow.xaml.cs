@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace HotelManager
 {
     /// <summary>
-    /// Logika interakcji dla klasy RoomPage.xaml
+    /// Logika interakcji dla klasy NewRoomWindow.xaml
     /// </summary>
-    public partial class RoomPage : Page
+    public partial class NewRoomWindow : Window
     {
-        public RoomPage()
+        public NewRoomWindow()
         {
             InitializeComponent();
         }

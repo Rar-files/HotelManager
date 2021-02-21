@@ -122,6 +122,8 @@ namespace HotelManager
             window.Content = mainPage;
         }
 
+
+
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             if (int.TryParse(customerSearch.Text, out int ID))
@@ -134,14 +136,7 @@ namespace HotelManager
                 var customersList = customers.ToList();
                 foreach (var e in customers.ToList())
                 {
-                    try
-                    {
-                        if (!CheckCustomerID(e.ID, ID))
-                        {
-                            customersList.Remove(e);
-                        }
-                    }
-                    catch (IndexOutOfRangeException)
+                    if (!CheckID(e.ID, ID))
                     {
                         customersList.Remove(e);
                     }
@@ -151,7 +146,7 @@ namespace HotelManager
             }
         }
 
-        private void DataGridSearchRowClick(object sender, MouseButtonEventArgs e)
+        private void CustomerDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text;
             if (txt != null)
@@ -167,7 +162,6 @@ namespace HotelManager
                     ID = int.Parse((cell.Content as TextBlock).Text);
                 }
 
-
                 SearchCustomersList.Visibility = Visibility.Collapsed;
                 customerSearch.Text = "Customer";
                 var custPage = new CustomerPage(ID);
@@ -176,7 +170,99 @@ namespace HotelManager
             }
         }
 
-        private bool CheckCustomerID(int test, int target)
+        private void ReservSearchTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (int.TryParse(customerSearch.Text, out int ID))
+            {
+                SearchReservList.Visibility = Visibility.Visible;
+                var reservations = (from r in context.Reservations
+                                    orderby r.Customer
+                                    select new { Customer = r.Customer, ID = r.ReservID }); ;
+
+                var reservationsList = reservations.ToList();
+                foreach (var e in reservations.ToList())
+                {
+                    if (!CheckID(e.ID, ID))
+                    {
+                        reservationsList.Remove(e);
+                    }
+                }
+
+                SearchReservList.ItemsSource = reservationsList;
+            }
+        }
+
+        private void ReservDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
+        {
+            var txt = (e.OriginalSource as TextBlock).Text;
+            if (txt != null)
+            {
+                int ID;
+                if (!int.TryParse(txt, out ID))
+                {
+                    var row = sender as DataGridRow;
+
+                    var cell = DataGridTools.GetCell(SearchReservList, row, 1);
+                    cell.IsEnabled = false;
+
+                    ID = int.Parse((cell.Content as TextBlock).Text);
+                }
+
+                SearchReservList.Visibility = Visibility.Collapsed;
+                customerSearch.Text = "Reservation";
+                var resrvPage = new ReservationPage(ID);
+                var window = (Window)this.Parent;
+                window.Content = resrvPage;
+            }
+        }
+
+        private void EmpSearchTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (int.TryParse(customerSearch.Text, out int ID))
+            {
+                SearchEmpList.Visibility = Visibility.Visible;
+                var reservations = (from r in context.Reservations
+                                    orderby r.Customer
+                                    select new { Customer = r.Customer, ID = r.ReservID }); ;
+
+                var reservationsList = reservations.ToList();
+                foreach (var e in reservations.ToList())
+                {
+                    if (!CheckID(e.ID, ID))
+                    {
+                        reservationsList.Remove(e);
+                    }
+                }
+
+                SearchEmpList.ItemsSource = reservationsList;
+            }
+        }
+
+        private void EmpDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
+        {
+            var txt = (e.OriginalSource as TextBlock).Text;
+            if (txt != null)
+            {
+                int ID;
+                if (!int.TryParse(txt, out ID))
+                {
+                    var row = sender as DataGridRow;
+
+                    var cell = DataGridTools.GetCell(SearchEmpList, row, 1);
+                    cell.IsEnabled = false;
+
+                    ID = int.Parse((cell.Content as TextBlock).Text);
+                }
+
+                SearchEmpList.Visibility = Visibility.Collapsed;
+                customerSearch.Text = "Reservation";
+                var empPage = new ReservationPage(ID);
+                var window = (Window)this.Parent;
+                window.Content = empPage;
+            }
+        }
+
+        private bool CheckID(int test, int target)
         {
             char[] tests = test.ToString().ToCharArray();
             char[] targets = target.ToString().ToCharArray();
