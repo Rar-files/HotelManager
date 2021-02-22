@@ -12,6 +12,7 @@
         <CollectionViewSource x:Key="reservationsViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Reservations}, CreateList=True}"/>
         <RoutedUICommand x:Key="UpdateCommand" Text="Update"/>
         <RoutedUICommand x:Key="CancelCommand" Text="Cancel"/>
+        <RoutedUICommand x:Key="ChooseCommand" Text="Cancel"/>
         <Style x:Key="NavButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
@@ -36,6 +37,7 @@
     </Window.Resources>
 
     <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource ChooseCommand}" Executed="ChooseCommandHandler"/>
         <CommandBinding Command="{StaticResource UpdateCommand}" Executed="UpdateCommandHandler"/>
         <CommandBinding Command="{StaticResource CancelCommand}" Executed="CancelCommandHandler"/>
     </Window.CommandBindings>
@@ -72,12 +74,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Content="Room:" Grid.Column="0" HorizontalAlignment="Left" Margin="4,0,0,0" Grid.Row="0" VerticalAlignment="Center"/>
-            <Label x:Name="roomLabel" Content="{Binding Room}" Grid.Column="1" HorizontalAlignment="Left"  Grid.Row="0" VerticalAlignment="Center"/>
+            <Button x:Name="ChooseRoomBtn" Command="{StaticResource ChooseCommand}" Content="Choose" FontSize="9" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="1" Margin="0,3" Width="40" Height="15"/>
+            <Label x:Name="roomLabel" Content="{Binding Room}" Grid.Column="2" HorizontalAlignment="Left"  Grid.Row="0" VerticalAlignment="Center"/>
         </Grid>
 
         <Grid x:Name="chooseEmploye" Grid.Row="2" DataContext="{StaticResource reservationsViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top">

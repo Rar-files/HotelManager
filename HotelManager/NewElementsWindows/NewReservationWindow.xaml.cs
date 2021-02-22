@@ -18,7 +18,7 @@ namespace HotelManager
         CollectionViewSource custViewSource;
         Customers currentCustomer;
         //Employees currentEmployees;
-        //Rooms currentRoom;
+        Rooms currentRoom;
 
         public NewReservationWindow()
         {
@@ -54,6 +54,15 @@ namespace HotelManager
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void ChooseCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            var roomWin = new RoomWindow();
+            if(roomWin.ShowDialog() == true)
+            {
+                currentRoom = roomWin.GetCurrentRoom;
+            }
         }
 
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
