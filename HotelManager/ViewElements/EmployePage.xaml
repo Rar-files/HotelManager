@@ -5,7 +5,251 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HotelManager"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="360" d:DesignWidth="585"
       Title="EmployePage">
-    
+    <Page.Resources>
+        <CollectionViewSource x:Key="employeesViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Employees}, CreateList=True}"/>
+        <RoutedUICommand x:Key="AddCommand" Text="Add"/>
+        <RoutedUICommand x:Key="DeleteCommand" Text="Delete"/>
+        <RoutedUICommand x:Key="UpdateCommand" Text="Update"/>
+        <RoutedUICommand x:Key="CancelCommand" Text="Cancel"/>
+        <Style x:Key="NavButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="Margin" Value="2,2,2,0"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="auto"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="Label" TargetType="{x:Type Label}" BasedOn="{x:Null}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Height" Value="26"/>
+        </Style>
+        <Style x:Key="CustTextBox" TargetType="{x:Type TextBox}" BasedOn="{x:Null}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Width" Value="120"/>
+        </Style>
+        <Style x:Key="SearchTextBox" TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
+
+    <Page.CommandBindings>
+        <CommandBinding Command="{StaticResource AddCommand}" Executed="AddCommandHandler"/>
+        <CommandBinding Command="{StaticResource DeleteCommand}" Executed="DeleteCustomerCommandHandler"/>
+        <CommandBinding Command="{StaticResource UpdateCommand}" Executed="UpdateCommandHandler"/>
+        <CommandBinding Command="{StaticResource CancelCommand}" Executed="CancelCommandHandler"/>
+    </Page.CommandBindings>
+
+    <Grid Background="White">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+
+        <!--ButtonPanel-->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="2,4,4,4" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top" DataContext="{StaticResource customersViewSource}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <Button Name="btnAdd" Content="New Customer" Command="{StaticResource AddCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}" Visibility="Collapsed"/>
+            <Button Name="btnDelete" Content="Delete Customer" Command="{StaticResource DeleteCommand}" FontSize="11" Width="120" Style="{StaticResource NavButton}" Visibility="Collapsed"/>
+            <Button Name="btnUpdate" Content="Commit" Command="{StaticResource UpdateCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}" Visibility="Collapsed"/>
+            <Button Content="Cancel" Name="btnCancel" Command="{StaticResource CancelCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
+        </StackPanel>
+
+
+        <!--content-->
+        <Grid x:Name="empGrid" DataContext="{StaticResource employeesViewSource}" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="130"/>
+                <ColumnDefinition Width="Auto" MinWidth="156"/>
+                <ColumnDefinition Width="Auto" MinWidth="130"/>
+                <ColumnDefinition Width="Auto" MinWidth="156"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Employee ID:" Grid.Column="0" Grid.Row="0" Style="{StaticResource Label}"/>
+            <Label x:Name="employeeIDLabel" Content="{Binding EmployeeID}" Grid.Column="1" Grid.Row="0" Style="{StaticResource Label}" />
+
+            <Label Content="First Name:" Grid.Column="0" Grid.Row="1" Style="{StaticResource Label}"/>
+            <TextBox x:Name="firstNameTextBox" Grid.Column="1" Grid.Row="1" Text="{Binding FirstName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Last Name:" Grid.Column="0" Grid.Row="2" Style="{StaticResource Label}"/>
+            <TextBox x:Name="lastNameTextBox" Grid.Column="1" Grid.Row="2" Text="{Binding LastName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Address:" Grid.Column="2" Grid.Row="4" Style="{StaticResource Label}"/>
+            <TextBox x:Name="addressTextBox" Grid.Column="3" Grid.Row="4" Text="{Binding Address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="City:" Grid.Column="2" Grid.Row="5" Style="{StaticResource Label}"/>
+            <TextBox x:Name="cityTextBox" Grid.Column="3" Grid.Row="5" Text="{Binding City, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Postal Code:" Grid.Column="2" Grid.Row="6" Style="{StaticResource Label}"/>
+            <TextBox x:Name="postalCodeTextBox" Grid.Column="3" Grid.Row="6" Text="{Binding PostalCode, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="County:" Grid.Column="2" Grid.Row="7" Style="{StaticResource Label}"/>
+            <TextBox x:Name="countyTextBox" Grid.Column="3" Grid.Row="7" Text="{Binding County, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Country:" Grid.Column="2" Grid.Row="8" Style="{StaticResource Label}"/>
+            <TextBox x:Name="countryTextBox" Grid.Column="3" Grid.Row="8" Text="{Binding Country, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Birth Date:" Grid.Column="0" Grid.Row="5" Style="{StaticResource Label}"/>
+            <DatePicker x:Name="birthDateDatePicker" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Margin="3,3,0,3" SelectedDate="{Binding BirthDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Width="120"/>
+
+            <Label Content="Email:" Grid.Column="0" Grid.Row="6" Style="{StaticResource Label}"/>
+            <TextBox x:Name="emailTextBox" Grid.Column="1" Grid.Row="6" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Phone:" Grid.Column="0" Grid.Row="7" Style="{StaticResource Label}"/>
+            <TextBox x:Name="phoneTextBox" Grid.Column="1" Grid.Row="7" Text="{Binding Phone, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+        </Grid>
+
+
+        <!--SearchBar-->
+        <Grid Margin="0" Height="26" VerticalAlignment="Top" Background="Gainsboro" DataContext="{StaticResource customersViewSource}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="28"/>
+                <ColumnDefinition Width="Auto" MinWidth="128"/>
+                <ColumnDefinition Width="Auto" MinWidth="30"/>
+                <ColumnDefinition Width="Auto" MinWidth="128"/>
+                <ColumnDefinition Width="Auto" MinWidth="26"/>
+                <ColumnDefinition Width="Auto" MinWidth="128"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Path HorizontalAlignment="Right" Fill="DarkCyan" Data="M9,7H11V11H13V7H15V17H13V13H11V17H9V7M3,5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5M5,5V19H19V5H5Z"/>
+                <Label Content="otel MANAG3R" FontSize="14" Padding="1,3,0,0"/>
+            </StackPanel>
+            <Path Grid.Column="1" HorizontalAlignment="Right" Fill="#1D2529" Data="M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14M10,4A4,4 0 0,1 14,8C14,8.91 13.69,9.75 13.18,10.43C12.32,10.75 11.55,11.26 10.91,11.9L10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M2,20V18C2,15.88 5.31,14.14 9.5,14C9.18,14.78 9,15.62 9,16.5C9,17.79 9.38,19 10,20H2Z"/>
+            <TextBox x:Name="customerSearch" Grid.Column="2" Style="{StaticResource SearchTextBox}" TextChanged="CustomerSearchTextChanged"/>
+            <Path Grid.Column="3" HorizontalAlignment="Right" Fill="#1D2529" Data="M8,9A2,2 0 0,1 10,11A2,2 0 0,1 8,13A2,2 0 0,1 6,11A2,2 0 0,1 8,9M12,17H4V16C4,14.67 6.67,14 8,14C9.33,14 12,14.67 12,16V17M20,8H14V10H20V8M20,12H14V14H20V12M20,16H14V18H 20V16M22,4H14V6H22V20H2V6H10V4H2A2,2 0 0,0 0,6V20A2,2 0 0,0 2 22H22A2,2 0 0,0 24,20V6A2,2 0 0,0 22,4M13,6H11V2H13V6Z"/>
+            <TextBox x:Name="reservationSearch" Grid.Column="4" Style="{StaticResource SearchTextBox}" TextChanged="ReservSearchTextChanged"/>
+            <Path Grid.Column="5" HorizontalAlignment="Right" Fill="#1D2529" Data="M12,3A4,4 0 0,1 16,7A4,4 0 0,1 12,11A4,4 0 0,1 8,7A4,4 0 0,1 12,3M16,13.54C16,14.6 15.72,17.07 13.81,19.83L13,15L13.94,13.12C13.32,13.05 12.67,13 12,13C11.33,13 10.68,13.05 10.06,13.12L11,15L10.19,19.83C8.28,17.07 8,14.6 8,13.54C5.61,14.24 4,15.5 4,17V21H10L11.09,21H12.91L14,21H20V17C20,15.5 18.4,14.24 16,13.54Z"/>
+            <TextBox x:Name="employerSearch" Grid.Column="6" Style="{StaticResource SearchTextBox}" TextChanged="EmpSearchTextChanged"/>
+        </Grid>
+
+        <DataGrid x:Name="SearchCustomersList" HorizontalAlignment="Left" Margin="355,21,0,0" VerticalAlignment="Top" Grid.RowSpan="3">
+
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGrid}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="MaxHeight" Value="100"/>
+                    <Setter Property="Height" Value="auto"/>
+                    <Setter Property="CanUserAddRows" Value="False"/>
+                    <Setter Property="CanUserDeleteRows" Value="False"/>
+                    <Setter Property="CanUserResizeColumns" Value="False"/>
+                    <Setter Property="CanUserResizeRows" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridRowHeader}">
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="90"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseLeftButtonDown" Handler="CustomerDataGridSearchRowClick"/>
+
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
+
+        <DataGrid x:Name="SearchReservList" HorizontalAlignment="Left" Margin="512,21,0,0" VerticalAlignment="Top">
+
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGrid}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="MaxHeight" Value="100"/>
+                    <Setter Property="Height" Value="auto"/>
+                    <Setter Property="CanUserAddRows" Value="False"/>
+                    <Setter Property="CanUserDeleteRows" Value="False"/>
+                    <Setter Property="CanUserResizeColumns" Value="False"/>
+                    <Setter Property="CanUserResizeRows" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridRowHeader}">
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="90"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseLeftButtonDown" Handler="ReservDataGridSearchRowClick"/>
+
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
+
+        <DataGrid x:Name="SearchEmpList" HorizontalAlignment="Left" Margin="665,21,0,0" VerticalAlignment="Top" Width="135">
+
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGrid}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="MaxHeight" Value="100"/>
+                    <Setter Property="Height" Value="auto"/>
+                    <Setter Property="CanUserAddRows" Value="False"/>
+                    <Setter Property="CanUserDeleteRows" Value="False"/>
+                    <Setter Property="CanUserResizeColumns" Value="False"/>
+                    <Setter Property="CanUserResizeRows" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridRowHeader}">
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Width" Value="50"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseLeftButtonDown" Handler="EmpDataGridSearchRowClick"/>
+
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
+    </Grid>
+
 </Page>

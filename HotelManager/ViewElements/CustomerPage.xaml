@@ -97,6 +97,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            
             <Label Content="Customer ID:" Grid.Row="0" Style="{StaticResource Label}"/>
             <Label x:Name="customerIDLabel" Content="{Binding CustomerID}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"  Style="{StaticResource Label}" RenderTransformOrigin="-6.312,0.478"/>
 

@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:HotelManager"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
-      Title="MainPage">
+      Title="MainPage"
+      Loaded="Page_Loaded">
 
     <Page.Resources>
         <RoutedCommand x:Key="addReservation"/>

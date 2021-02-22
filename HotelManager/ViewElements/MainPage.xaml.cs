@@ -23,23 +23,30 @@ namespace HotelManager
             DataContext = this;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
             // customersViewSource.Źródło = [ogólne źródło danych]
             context.Customers.Load();
             custViewSource.Source = context.Customers.Local;
+            if (App.adminFlag)
+            {
+                adminStatus.Visibility = Visibility.Visible;
+                adminTools.Visibility = Visibility.Visible;
+            }
         }
 
         private void AdminModeToggle(object sender, MouseButtonEventArgs e)
         {
             if(adminStatus.Visibility == Visibility.Visible)
             {
+                App.adminFlag = false;
                 adminStatus.Visibility = Visibility.Collapsed;
                 adminTools.Visibility = Visibility.Collapsed;
             }
             else
             {
+                App.adminFlag = true;
                 adminStatus.Visibility = Visibility.Visible;
                 adminTools.Visibility = Visibility.Visible;
             }
