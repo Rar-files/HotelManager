@@ -69,7 +69,7 @@ namespace HotelManager
 
         private void AddEmpHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            new NewCustomerWindow().Show();
+            new NewEmpWindow().Show();
         }
 
 

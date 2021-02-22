@@ -39,7 +39,7 @@
         <CommandBinding Command="{StaticResource CancelCommand}" Executed="CancelCommandHandler"/>
     </Window.CommandBindings>
 
-    <Grid DataContext="{StaticResource customersReservationsViewSource}">
+    <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

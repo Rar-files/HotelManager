@@ -5,8 +5,101 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HotelManager"
         mc:Ignorable="d"
-        Title="NewEmpWindow" Height="450" Width="800">
+        Title="NewEmpWindow" Height="330" Width="600"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="employeesViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Employees}, CreateList=True}"/>
+        <RoutedUICommand x:Key="UpdateCommand" Text="Update"/>
+        <RoutedUICommand x:Key="CancelCommand" Text="Cancel"/>
+        <Style x:Key="NavButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="Margin" Value="2,2,2,0"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="auto"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="Label" TargetType="{x:Type Label}" BasedOn="{x:Null}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Height" Value="26"/>
+        </Style>
+        <Style x:Key="CustTextBox" TargetType="{x:Type TextBox}" BasedOn="{x:Null}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Width" Value="120"/>
+        </Style>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource UpdateCommand}" Executed="UpdateCommandHandler"/>
+        <CommandBinding Command="{StaticResource CancelCommand}" Executed="CancelCommandHandler"/>
+    </Window.CommandBindings>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!--ButtonPanel-->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="2,4,4,4" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top" DataContext="{StaticResource customersViewSource}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <Button Name="btnUpdate" Content="Commit" Command="{StaticResource UpdateCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
+            <Button Content="Cancel" Name="btnCancel" Command="{StaticResource CancelCommand}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
+        </StackPanel>
+
+            <!--content-->
+        <Grid x:Name="empGrid" DataContext="{StaticResource employeesViewSource}" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="0" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="130"/>
+                <ColumnDefinition Width="Auto" MinWidth="156"/>
+                <ColumnDefinition Width="Auto" MinWidth="130"/>
+                <ColumnDefinition Width="Auto" MinWidth="156"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="First Name:" Grid.Column="0" Grid.Row="0" Style="{StaticResource Label}"/>
+            <TextBox x:Name="firstNameTextBox" Grid.Column="1" Grid.Row="0" Text="{Binding FirstName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Last Name:" Grid.Column="0" Grid.Row="1" Style="{StaticResource Label}"/>
+            <TextBox x:Name="lastNameTextBox" Grid.Column="1" Grid.Row="1" Text="{Binding LastName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Address:" Grid.Column="2" Grid.Row="3" Style="{StaticResource Label}"/>
+            <TextBox x:Name="addressTextBox" Grid.Column="3" Grid.Row="3" Text="{Binding Address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="City:" Grid.Column="2" Grid.Row="4" Style="{StaticResource Label}"/>
+            <TextBox x:Name="cityTextBox" Grid.Column="3" Grid.Row="4" Text="{Binding City, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Postal Code:" Grid.Column="2" Grid.Row="5" Style="{StaticResource Label}"/>
+            <TextBox x:Name="postalCodeTextBox" Grid.Column="3" Grid.Row="5" Text="{Binding PostalCode, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="County:" Grid.Column="2" Grid.Row="6" Style="{StaticResource Label}"/>
+            <TextBox x:Name="countyTextBox" Grid.Column="3" Grid.Row="6" Text="{Binding County, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Country:" Grid.Column="2" Grid.Row="7" Style="{StaticResource Label}"/>
+            <TextBox x:Name="countryTextBox" Grid.Column="3" Grid.Row="7" Text="{Binding Country, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Birth Date:" Grid.Column="0" Grid.Row="4" Style="{StaticResource Label}"/>
+            <DatePicker x:Name="birthDateDatePicker" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="3,3,0,3" SelectedDate="{Binding BirthDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Width="120"/>
+
+            <Label Content="Email:" Grid.Column="0" Grid.Row="5" Style="{StaticResource Label}"/>
+            <TextBox x:Name="emailTextBox" Grid.Column="1" Grid.Row="5" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+
+            <Label Content="Phone:" Grid.Column="0" Grid.Row="6" Style="{StaticResource Label}"/>
+            <TextBox x:Name="phoneTextBox" Grid.Column="1" Grid.Row="6" Text="{Binding Phone, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Style="{StaticResource CustTextBox}"/>
+        </Grid>
     </Grid>
 </Window>

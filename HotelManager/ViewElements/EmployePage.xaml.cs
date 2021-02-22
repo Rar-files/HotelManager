@@ -16,22 +16,19 @@ namespace HotelManager
     {
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource empViewSource;
-        CollectionViewSource reservViewSource;
-        Style style;
         Employees initial = null;
 
         public EmployePage()
         {
             InitializeComponent();
-            empViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
-            style = ((Style)(this.FindResource("NavButton_Admin")));
+            empViewSource = ((CollectionViewSource)(this.FindResource("employeesViewSource")));
             DataContext = this;
         }
 
         public EmployePage(int EmpID)
         {
             InitializeComponent();
-            empViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
+            empViewSource = ((CollectionViewSource)(this.FindResource("employeesViewSource")));
             DataContext = this;
             initial = context.Employees.Find(EmpID);
         }
