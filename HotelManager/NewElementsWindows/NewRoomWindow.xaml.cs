@@ -39,17 +39,20 @@ namespace HotelManager
 
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            var room = new Rooms
+            if (roomClass != null & numberTextBox.Text != null)
             {
-                Number = int.Parse(numberTextBox.Text),
-                Class = roomClass.ClassID,
-                forTheDisabled = (bool)forTheDisabledCheckBox.IsChecked,
-                AdditionalInfo = additionalInfoTextBox.Text
-            };
+                var room = new Rooms
+                {
+                    Number = int.Parse(numberTextBox.Text),
+                    Class = roomClass.ClassID,
+                    forTheDisabled = (bool)forTheDisabledCheckBox.IsChecked,
+                    AdditionalInfo = additionalInfoTextBox.Text
+                };
 
-            context.Rooms.Add(room);
-            context.SaveChanges();
-            this.Close();
+                context.Rooms.Add(room);
+                context.SaveChanges();
+                this.Close();
+            }
         }
 
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)

@@ -18,7 +18,7 @@ namespace HotelManager
         CollectionViewSource roomViewSource;
         CollectionViewSource roomClassViewSource;
 
-        public Rooms GetCurrentRoom { get => roomViewSource.View.CurrentItem as Rooms; }
+        public int getCurrentRoom;
 
         public RoomWindow()
         {
@@ -33,22 +33,28 @@ namespace HotelManager
             // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
             // customersViewSource.Źródło = [ogólne źródło danych]
             context.Rooms.Load();
+            context.RoomsClass.Load();
             roomViewSource.Source = context.Rooms.Local;
+            roomClassViewSource.Source = context.RoomsClass.Local;
+            roomClassViewSource.View.MoveCurrentTo(context.RoomsClass.Find((roomViewSource.View.CurrentItem as Rooms).Class));
         }
 
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
+            getCurrentRoom = (roomViewSource.View.CurrentItem as Rooms).RoomID;
             this.Close();
         }
 
         private void PrevCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            roomViewSource.View.MoveCurrentToPrevious();
+            if (roomViewSource.View.MoveCurrentToPrevious())
+                roomClassViewSource.View.MoveCurrentTo(context.RoomsClass.Find((roomViewSource.View.CurrentItem as Rooms).Class));
         }
 
         private void NextCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            roomViewSource.View.MoveCurrentToNext();
+            if(roomViewSource.View.MoveCurrentToNext())
+                roomClassViewSource.View.MoveCurrentTo(context.RoomsClass.Find((roomViewSource.View.CurrentItem as Rooms).Class));
         }
     }
 }
