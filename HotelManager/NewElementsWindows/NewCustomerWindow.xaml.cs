@@ -58,7 +58,6 @@ namespace HotelManager
 
             context.Customers.Add(newCustomer);
             context.SaveChanges();
-            custViewSource.View.Refresh();
             this.Close();
         }
 

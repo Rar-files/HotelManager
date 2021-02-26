@@ -27,6 +27,7 @@
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="auto"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
         <Style x:Key="Label" TargetType="{x:Type Label}" BasedOn="{x:Null}">
             <Setter Property="HorizontalAlignment" Value="Left"/>

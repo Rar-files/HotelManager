@@ -33,6 +33,8 @@ namespace HotelManager
             {
                 adminStatus.Visibility = Visibility.Visible;
                 adminTools.Visibility = Visibility.Visible;
+                adminButton.Visibility = Visibility.Visible;
+                AdminFactoryReset.Visibility = Visibility.Visible;
             }
         }
 
@@ -43,13 +45,45 @@ namespace HotelManager
                 App.adminFlag = false;
                 adminStatus.Visibility = Visibility.Collapsed;
                 adminTools.Visibility = Visibility.Collapsed;
+                adminButton.Visibility = Visibility.Collapsed;
+                AdminFactoryReset.Visibility = Visibility.Collapsed;
             }
             else
             {
                 App.adminFlag = true;
                 adminStatus.Visibility = Visibility.Visible;
                 adminTools.Visibility = Visibility.Visible;
+                adminButton.Visibility = Visibility.Visible;
+                AdminFactoryReset.Visibility = Visibility.Visible;
             }
+        }
+
+        private void HardResetHandler(object sender, MouseButtonEventArgs e)
+        {
+            ResetPopUp.Visibility = Visibility.Visible;
+        }
+
+        private void HardResetHandler(object sender, RoutedEventArgs e)
+        {
+            context.Customers.RemoveRange(context.Set<Customers>());
+            context.Employees.RemoveRange(context.Set<Employees>());
+            context.Rooms.RemoveRange(context.Set<Rooms>());
+            context.RoomsClass.RemoveRange(context.Set<RoomsClass>());
+            context.Reservations.RemoveRange(context.Set<Reservations>());
+            context.SaveChanges();
+            ResetPopUp.Visibility = Visibility.Collapsed;
+        }
+
+        private void ResetHandler(object sender, RoutedEventArgs e)
+        {
+            context.Customers.RemoveRange(context.Set<Customers>());
+            context.Reservations.RemoveRange(context.Set<Reservations>());
+            context.SaveChanges();
+            ResetPopUp.Visibility = Visibility.Collapsed;
+        }
+        private void CloseResetPopUpHandler(object sender, RoutedEventArgs e)
+        {
+            ResetPopUp.Visibility = Visibility.Collapsed;
         }
 
         private void AddReservationHandler(object sender, ExecutedRoutedEventArgs e)
@@ -64,7 +98,12 @@ namespace HotelManager
 
         private void AddRoomHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            new NewReservationWindow().Show();
+            new NewRoomWindow().Show();
+        }
+
+        private void AddRoomClassHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            new NewRoomClassWindow().Show();
         }
 
         private void AddEmpHandler(object sender, ExecutedRoutedEventArgs e)
@@ -76,49 +115,56 @@ namespace HotelManager
         //SearchBar
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
-
-            SearchCustomersList.Visibility = Visibility.Visible;
             var customers = (from c in context.Customers
-                                orderby c.LastName
-                                select new { Customer = (c.LastName + " " + c.FirstName), ID = c.CustomerID }); ;
+                             orderby c.LastName
+                             select new { Customer = (c.LastName + " " + c.FirstName), ID = c.CustomerID }); ;
 
             var customersList = customers.ToList();
             customersList.Clear();
 
+            SearchCustomersList.Visibility = Visibility.Collapsed;
+            SearchCustomersList.ItemsSource = null;
 
-            foreach (var e in customers.ToList())
+            string txt = (sender as TextBox).Text.ToLower();
+            if (txt != "")
             {
-                var names = e.Customer.Split();
-                try
+                SearchCustomersList.Visibility = Visibility.Visible;
+
+                foreach (var e in customers.ToList())
                 {
-                    if (int.TryParse((sender as TextBox).Text, out int ID))
+                    var names = e.Customer.ToLower().Split();
+                    try
                     {
-                        if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                        if (int.TryParse(txt, out int ID))
+                        {
+                            if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                            {
+                                customersList.Add(e);
+                            }
+                        }
+
+                        if (DataGridTools.CheckString(names[0], txt))
                         {
                             customersList.Add(e);
                         }
+                        if (DataGridTools.CheckString(names[1], txt))
+                        {
+                            if (!customersList.Exists(elem => elem == e))
+                                customersList.Add(e);
+                        }
                     }
+                    catch (IndexOutOfRangeException)
+                    {
+                    }
+                }
 
-                    if (DataGridTools.CheckString(names[0], customerSearch.Text))
-                    {
-                        customersList.Add(e);
-                    }
-                    if (DataGridTools.CheckString(names[1], customerSearch.Text))
-                    {
-                        customersList.Add(e);
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                }
+                SearchCustomersList.ItemsSource = customersList;
             }
-
-            SearchCustomersList.ItemsSource = customersList;
         }
 
         private void CustomerDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
-            var txt = (e.OriginalSource as TextBlock).Text;
+            var txt = (e.OriginalSource as TextBlock).Text.ToLower();
             if (txt != null)
             {
                 int ID;
@@ -141,7 +187,6 @@ namespace HotelManager
 
         private void ReservSearchTextChanged(object sender, TextChangedEventArgs args)
         {
-            SearchReservList.Visibility = Visibility.Visible;
             var reservations = (from r in context.Reservations
                                 orderby r.Customer
                                 select new { Customer = context.Customers.Find(r.Customer).LastName + " " + context.Customers.Find(r.Customer).FirstName, ID = r.ReservID }); ;
@@ -149,40 +194,48 @@ namespace HotelManager
             var reservationsList = reservations.ToList();
             reservationsList.Clear();
 
+            SearchReservList.Visibility = Visibility.Collapsed;
+            SearchReservList.ItemsSource = null;
 
-            foreach (var e in reservations.ToList())
+            string txt = (sender as TextBox).Text.ToLower();
+            if (txt != "")
             {
-                var names = e.Customer.Split();
-                try
+                SearchReservList.Visibility = Visibility.Visible;
+                foreach (var e in reservations.ToList())
                 {
-                    if (int.TryParse((sender as TextBox).Text, out int ID))
+                    var names = e.Customer.ToLower().Split();
+                    try
                     {
-                        if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                        if (int.TryParse(txt, out int ID))
+                        {
+                            if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                            {
+                                reservationsList.Add(e);
+                            }
+                        }
+
+                        if (DataGridTools.CheckString(names[0], txt))
                         {
                             reservationsList.Add(e);
                         }
+                        if (DataGridTools.CheckString(names[1], txt))
+                        {
+                            if (!reservationsList.Exists(elem => elem == e))
+                                reservationsList.Add(e);
+                        }
                     }
+                    catch (IndexOutOfRangeException)
+                    {
+                    }
+                }
 
-                    if (DataGridTools.CheckString(names[0], customerSearch.Text))
-                    {
-                        reservationsList.Add(e);
-                    }
-                    if (DataGridTools.CheckString(names[1], customerSearch.Text))
-                    {
-                        reservationsList.Add(e);
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                }
+                SearchReservList.ItemsSource = reservationsList;
             }
-
-            SearchCustomersList.ItemsSource = reservationsList;
         }
 
         private void ReservDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
-            var txt = (e.OriginalSource as TextBlock).Text;
+            var txt = (e.OriginalSource as TextBlock).Text.ToLower();
             if (txt != null)
             {
                 int ID;
@@ -190,13 +243,13 @@ namespace HotelManager
                 {
                     var row = sender as DataGridRow;
 
-                    var cell = DataGridTools.GetCell(SearchCustomersList, row, 1);
+                    var cell = DataGridTools.GetCell(SearchReservList, row, 1);
                     cell.IsEnabled = false;
 
                     ID = int.Parse((cell.Content as TextBlock).Text);
                 }
 
-                SearchCustomersList.Visibility = Visibility.Collapsed;
+                SearchReservList.Visibility = Visibility.Collapsed;
                 var resrvPage = new ReservationPage(ID);
                 var window = (Window)this.Parent;
                 window.Content = resrvPage;
@@ -205,44 +258,51 @@ namespace HotelManager
 
         private void EmpSearchTextChanged(object sender, TextChangedEventArgs args)
         {
-
-            SearchCustomersList.Visibility = Visibility.Visible;
             var emps = (from e in context.Employees
-                                orderby e.LastName
-                                select new { Employee = (e.LastName + " " + e.FirstName), ID = e.EmployeeID }); ;
+                        orderby e.LastName
+                        select new { Employee = (e.LastName + " " + e.FirstName), ID = e.EmployeeID }); ;
 
             var empsList = emps.ToList();
             empsList.Clear();
 
+            SearchEmpList.Visibility = Visibility.Collapsed;
+            SearchEmpList.ItemsSource = null;
 
-            foreach (var e in emps.ToList())
+            string txt = (sender as TextBox).Text.ToLower();
+            if (txt != "")
             {
-                var names = e.Employee.Split();
-                try
+                SearchEmpList.Visibility = Visibility.Visible;
+                foreach (var e in emps.ToList())
                 {
-                    if (int.TryParse((sender as TextBox).Text, out int ID))
+                    var names = e.Employee.ToLower().Split();
+                    try
                     {
-                        if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                        if (int.TryParse(txt, out int ID))
+                        {
+                            if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                            {
+                                empsList.Add(e);
+                            }
+                        }
+
+                        if (DataGridTools.CheckString(names[0], txt))
                         {
                             empsList.Add(e);
                         }
+                        if (DataGridTools.CheckString(names[1], txt))
+                        {
+                            if (!empsList.Exists(elem => elem == e))
+                                empsList.Add(e);
+                        }
                     }
+                    catch (IndexOutOfRangeException)
+                    {
+                    }
+                }
 
-                    if (DataGridTools.CheckString(names[0], customerSearch.Text))
-                    {
-                        empsList.Add(e);
-                    }
-                    if (DataGridTools.CheckString(names[1], customerSearch.Text))
-                    {
-                        empsList.Add(e);
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                }
+
+                SearchEmpList.ItemsSource = empsList;
             }
-
-            SearchCustomersList.ItemsSource = empsList;
         }
 
         private void EmpDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
@@ -255,18 +315,17 @@ namespace HotelManager
                 {
                     var row = sender as DataGridRow;
 
-                    var cell = DataGridTools.GetCell(SearchCustomersList, row, 1);
+                    var cell = DataGridTools.GetCell(SearchEmpList, row, 1);
                     cell.IsEnabled = false;
 
                     ID = int.Parse((cell.Content as TextBlock).Text);
                 }
 
-                SearchCustomersList.Visibility = Visibility.Collapsed;
+                SearchEmpList.Visibility = Visibility.Collapsed;
                 var empPage = new EmployePage(ID);
                 var window = (Window)this.Parent;
                 window.Content = empPage;
             }
         }
-
     }
 }

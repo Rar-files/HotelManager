@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HotelDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="HotelDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Customers">
           <Key>
             <PropertyRef Name="CustomerID" />
@@ -14,7 +14,7 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="28" Nullable="false" />
           <Property Name="PIN" Type="nvarchar" MaxLength="4" Nullable="false" />
           <Property Name="IDCardSeries" Type="char" MaxLength="9" Nullable="false" />
-          <Property Name="PESEL" Type="char" MaxLength="9" Nullable="false" />
+          <Property Name="PESEL" Type="nvarchar" MaxLength="11" />
           <Property Name="CarNumber" Type="nvarchar" MaxLength="10" />
           <Property Name="Address" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="City" Type="nvarchar" MaxLength="32" Nullable="false" />
@@ -22,7 +22,7 @@
           <Property Name="County" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="Country" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="Phone" Type="char" MaxLength="9" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="30" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="AdditionalInfo" Type="nvarchar" MaxLength="80" />
         </EntityType>
         <EntityType Name="Employees">
@@ -146,8 +146,7 @@
             <End Role="Rooms" EntitySet="Rooms" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HotelDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -160,7 +159,7 @@
           <Property Name="LastName" Type="String" MaxLength="28" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PIN" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IDCardSeries" Type="String" MaxLength="9" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="PESEL" Type="String" MaxLength="9" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="PESEL" MaxLength="11" FixedLength="false" Unicode="true" Type="String" />
           <Property Name="CarNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="City" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
@@ -168,7 +167,7 @@
           <Property Name="County" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="9" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AdditionalInfo" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Reservations" Relationship="Self.FK__Reservati__Custo__2E1BDC42" FromRole="Customers" ToRole="Reservations" />
         </EntityType>

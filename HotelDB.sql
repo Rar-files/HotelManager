@@ -42,7 +42,7 @@ CREATE TABLE "Customers" (
 	"LastName" nvarchar (28) NOT NULL,
 	"PIN" nvarchar (4) NOT NULL,
 	"IDCardSeries" char (9) NOT NULL ,
-	"PESEL" char (9) NOT NULL ,
+	"PESEL" char (11) NOT NULL ,
 	"CarNumber" nvarchar (10) NULL ,
 	"Address" nvarchar (80) NOT NULL ,
 	"City" nvarchar (32) NOT NULL ,
@@ -50,7 +50,7 @@ CREATE TABLE "Customers" (
 	"County" nvarchar (30) NOT NULL ,
 	"Country" nvarchar (15) NOT NULL ,
 	"Phone" char (9) NOT NULL,
-	"Email" nvarchar (30) NULL,
+	"Email" nvarchar (50) NULL,
 	"AdditionalInfo" nvarchar (80) NULL
 )
 

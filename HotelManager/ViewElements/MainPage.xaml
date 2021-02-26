@@ -14,6 +14,7 @@
         <RoutedCommand x:Key="addCustomer"/>
         <RoutedCommand x:Key="addRoom"/>
         <RoutedCommand x:Key="addEmp"/>
+        <RoutedCommand x:Key="addRoomClass"/>
         <Style x:Key="SearchTextBox" TargetType="TextBox">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Width" Value="120"/>
@@ -31,6 +32,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
         <Style x:Key="NavigateAdminButton" TargetType="Button">
             <Setter Property="Foreground" Value="Azure"/>
@@ -40,6 +42,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </Page.Resources>
 
@@ -48,6 +51,7 @@
         <CommandBinding Command="{StaticResource addReservation}" Executed="AddReservationHandler"/>
         <CommandBinding Command="{StaticResource addRoom}" Executed="AddRoomHandler"/>
         <CommandBinding Command="{StaticResource addEmp}" Executed="AddEmpHandler"/>
+        <CommandBinding Command="{StaticResource addRoomClass}" Executed="AddRoomClassHandler"/>
     </Page.CommandBindings>
 
     <Grid>
@@ -77,9 +81,9 @@
                     <RowDefinition Height="15*"/>
                     <RowDefinition Height="10*"/>
                     <RowDefinition Height="15*"/>
+                    <RowDefinition Height="5*"/>
                     <RowDefinition Height="10*"/>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="15*"/>
                 </Grid.RowDefinitions>
 
                 <Button Grid.Row="3" Content="Nowy Klient" Command="{StaticResource addCustomer}" Style="{StaticResource NavigateButton}"/>
@@ -97,11 +101,13 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="0" Content="Nowy Pokój" HorizontalAlignment="Right" Command="{StaticResource addRoom}" Style="{StaticResource NavigateAdminButton}"/>
-                    <Button Grid.Column="2" Content="Nowy Pracownik" HorizontalAlignment="Left" Command="{StaticResource addEmp}" Style="{StaticResource NavigateAdminButton}"/>
+                    <Button Grid.Column="2" Content="Nowa Klasa" HorizontalAlignment="Left" Command="{StaticResource addRoomClass}" Style="{StaticResource NavigateAdminButton}"/>
 
                 </Grid>
 
-                <Path Grid.Row="8" Margin="0,0,4,0" Fill="#1D2529" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                <Button x:Name="adminButton" Grid.Column="2" Grid.Row="8" Content="Nowy Pracownik" Height="50" Visibility="Collapsed" Command="{StaticResource addEmp}" Style="{StaticResource NavigateAdminButton}"/>
+
+                <Path Grid.Row="8" Margin="0,0,4,0" Fill="#1D2529" VerticalAlignment="Bottom" HorizontalAlignment="Right" Cursor="Hand"
                       Data="M11,10V12H10V14H8V12H5.83C5.42,13.17 4.31,14 3,14A3,3 0 0,1 0,11A3,3 0 0,1 3,8C4.31,8 5.42,8.83 5.83,10H11M3,10A1,1 0 0,0 2,11A1,1 0 0,0 3,12A1,1 0 0,0 4,11A1,1 0 0,0 3,10M16,14C18.67,14 24,15.34 24,18V20H8V18C8,15.34 13.33,14 16,14M16,12A4,4 0 0,1 12,8A4,4 0 0,1 16,4A4,4 0 0,1 20,8A4,4 0 0,1 16,12Z"
                       RenderTransformOrigin="1, 1"
                       Height="25" Width="25"
@@ -112,8 +118,65 @@
 
                 </Path>
 
+                <Canvas x:Name="AdminFactoryReset" Height="20" Width="20" Grid.Row="8" Margin="0,0,4,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" MouseLeftButtonDown="HardResetHandler" Visibility="Collapsed" Cursor="Hand">
+                        <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform X="0" Y="-14" />
+                            <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+                        <Canvas>
+                            <Canvas.RenderTransform>
+                                <MatrixTransform Matrix="1.2809155,0,0,1.2374188,103.99112,-1219.3652" />
+                            </Canvas.RenderTransform>
+                        <Path Fill="#1D2529" Data="m -72.695687,1000.9938 c -1.972631,-0.2257 -3.790181,-1.49518 -4.687846,-3.27432 -0.175341,-0.34752 -0.468403,-1.12381 -0.468403,-1.24073 0,-0.0266 0.375731,-0.048 0.834956,-0.0476 l 0.834965,7.2e-4 0.163557,0.4041 c 0.519646,1.28389 1.615359,2.24396 2.994703,2.62398 0.49589,0.13662 1.63139,0.13421 2.144474,-0.005 0.522244,-0.14124 1.250991,-0.50448 1.653619,-0.82424 0.687488,-0.546 1.31115,-1.49718 1.539,-2.34722 0.146128,-0.54518 0.177544,-1.43846 0.07041,-2.00269 -0.178809,-0.94189 -0.54809,-1.63735 -1.241568,-2.33827 -0.844669,-0.85372 -1.728666,-1.24944 -2.900391,-1.29837 -0.550547,-0.023 -0.767325,-0.006 -1.18485,0.0941 -1.415428,0.33867 -2.632012,1.39775 -3.122259,2.71804 l -0.103341,0.27832 h -0.842765 -0.842766 l 0.03834,-0.16113 c 0.08466,-0.35604 0.444253,-1.16597 0.699534,-1.57555 0.354919,-0.56944 1.084444,-1.33426 1.637166,-1.71635 3.344531,-2.31207 7.975171,-0.83571 9.268415,2.95499 1.2168,3.56666 -1.256634,7.33132 -5.098284,7.75962 -0.62535,0.07 -0.754641,0.069 -1.386656,0 z" />
+                            <Canvas>
+                                <Canvas.RenderTransform>
+                                    <MatrixTransform Matrix="0.77578717,0,0,0.61178065,-35.477186,373.83106" />
+                                </Canvas.RenderTransform>
+                                <Rectangle Width="4.4458065" Height="1.1666708" Canvas.Left="-55.705212" Canvas.Top="1017.3687" />
+                            <Path Fill="#1D2529" Canvas.Left="-109.71203" Canvas.Top="1025.7628" Data="m -101.75708,1029.4917 -15.16173,1.2959 6.45861,-13.7784 z">
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="-0.30321012,-0.03553367,0.03028113,-0.35580483,-117.82847,1375.3296" />
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                    <Path Fill="#1D2529" Data="m 15.634037,11.667495 v 3.381957 c 0,0.113249 -0.08046,0.205088 -0.179691,0.205088 H 8.5062751 c -0.099224,0 -0.1796913,-0.09184 -0.1796913,-0.205088 v -2.392978 c 0,-0.07777 0.038521,-0.148812 0.099479,-0.183513 l 1.7370082,-0.988979 c 0.0557,-0.0317 0.12183,-0.02826 0.174733,0.0091 0.05294,0.03736 0.08518,0.103368 0.08518,0.174408 v 0.657473 l 1.063667,-0.605586 V 9.716359 c 0,-0.1132497 0.08046,-0.2050886 0.179693,-0.2050886 h 0.326104 c 0.09922,0 0.179691,0.091841 0.179691,0.2050886 v 2.601676 L 13.35886,11.64239 13.43232,8.0086663 c 0.0022,-0.111404 0.08201,-0.2003717 0.179655,-0.2003717 h 0.783348 c 0.09761,0 0.177392,0.088968 0.179656,0.2003717 l 0.07856,3.8855717 0.7206,-0.410259 c 0.0557,-0.0317 0.121795,-0.02826 0.174733,0.0091 0.05294,0.03736 0.08518,0.103324 0.08518,0.174366 z M 9.5872294,13.594756 H 9.1011629 v 0.779584 h 0.4860665 z m 1.3162426,0 h -0.486066 v 0.779584 h 0.486066 z m 1.316278,0 h -0.486066 v 0.779584 h 0.486066 z m 1.316278,0 h -0.486067 v 0.779584 h 0.486067 z" />
+                </Canvas>
+
+
+
             </Grid>
 
+        </Grid>
+        <Grid x:Name="ResetPopUp" Grid.Row="1" Visibility="Collapsed">
+            <Border Background="Azure" Height="200" Width="520" BorderThickness="2" BorderBrush="Black">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Usunąć oraz zresetować licznik ID klientów i rezerwacji, czy wszystkie zapisane dane?" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" TextWrapping="Wrap" TextAlignment="Center"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="3.5*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="Klientów i Rezerwacje" Foreground="Azure" Background="#1D2529" Grid.Column="1" Height="45" VerticalAlignment="Top" FontSize="14" Click="ResetHandler"/>
+                        <Button Content="Wszystko" Background="#1D2529" Foreground="Azure" Grid.Column="3" Height="45" VerticalAlignment="Top" FontSize="14" Click="HardResetHandler"/>
+                    </Grid>
+
+                    <Button Grid.Row="2" Width="150" Content="Cofnij" Background="#1D2529" Foreground="Azure" Grid.Column="3" Height="30" VerticalAlignment="Top" FontSize="14" Click="CloseResetPopUpHandler"/>
+                </Grid>
+            </Border>
         </Grid>
 
 
@@ -127,6 +190,7 @@
                 <ColumnDefinition Width="Auto" MinWidth="125"/>
                 <ColumnDefinition Width="Auto" MinWidth="26"/>
                 <ColumnDefinition Width="Auto" MinWidth="125"/>
+                <ColumnDefinition Width="Auto" MinWidth="14"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -143,7 +207,7 @@
             <TextBox x:Name="employerSearch" Grid.Column="6" Style="{StaticResource SearchTextBox}" TextChanged="EmpSearchTextChanged"/>
         </Grid>
 
-        <DataGrid x:Name="SearchCustomersList" HorizontalAlignment="Left" Margin="355,21,0,0" VerticalAlignment="Top"  Grid.RowSpan="2">
+        <DataGrid x:Name="SearchCustomersList" HorizontalAlignment="Left" Margin="353,21,0,0" VerticalAlignment="Top"  Grid.RowSpan="2">
 
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGrid}">
@@ -174,11 +238,11 @@
             </DataGrid.ItemContainerStyle>
         </DataGrid>
 
-        <DataGrid x:Name="SearchReservList" HorizontalAlignment="Left" Margin="512,21,0,0" VerticalAlignment="Top">
+        <DataGrid x:Name="SearchReservList" HorizontalAlignment="Left" Margin="508,21,0,0" VerticalAlignment="Top" Grid.RowSpan="2">
 
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGrid}">
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                     <Setter Property="Width" Value="200"/>
                     <Setter Property="MaxHeight" Value="100"/>
                     <Setter Property="Height" Value="auto"/>
@@ -189,10 +253,10 @@
                     <Setter Property="Visibility" Value="Collapsed"/>
                 </Style>
                 <Style TargetType="{x:Type DataGridRowHeader}">
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                 </Style>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                     <Setter Property="Width" Value="90"/>
                 </Style>
             </DataGrid.Resources>
@@ -201,16 +265,16 @@
                 <Style TargetType="DataGridRow">
                     <EventSetter Event="MouseLeftButtonDown" Handler="ReservDataGridSearchRowClick"/>
 
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>
 
-        <DataGrid x:Name="SearchEmpList" HorizontalAlignment="Left" Margin="665,21,0,0" VerticalAlignment="Top" Width="135">
+        <DataGrid x:Name="SearchEmpList" HorizontalAlignment="Left" Margin="659,21,0,0" VerticalAlignment="Top" Width="135" Grid.RowSpan="2">
 
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGrid}">
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                     <Setter Property="Width" Value="200"/>
                     <Setter Property="MaxHeight" Value="100"/>
                     <Setter Property="Height" Value="auto"/>
@@ -221,10 +285,10 @@
                     <Setter Property="Visibility" Value="Collapsed"/>
                 </Style>
                 <Style TargetType="{x:Type DataGridRowHeader}">
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                 </Style>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                     <Setter Property="Width" Value="50"/>
                 </Style>
             </DataGrid.Resources>
@@ -233,7 +297,7 @@
                 <Style TargetType="DataGridRow">
                     <EventSetter Event="MouseLeftButtonDown" Handler="EmpDataGridSearchRowClick"/>
 
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="Azure"/>
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>
