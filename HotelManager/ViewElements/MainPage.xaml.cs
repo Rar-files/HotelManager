@@ -28,6 +28,7 @@ namespace HotelManager
             // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
             // customersViewSource.Źródło = [ogólne źródło danych]
             context.Customers.Load();
+            context.Reservations.Load();
             custViewSource.Source = context.Customers.Local;
             if (App.adminFlag)
             {
@@ -187,50 +188,50 @@ namespace HotelManager
 
         private void ReservSearchTextChanged(object sender, TextChangedEventArgs args)
         {
-            var reservations = (from r in context.Reservations
-                                orderby r.Customer
-                                select new { Customer = context.Customers.Find(r.Customer).LastName + " " + context.Customers.Find(r.Customer).FirstName, ID = r.ReservID }); ;
+                    var reservations = (from r in context.Reservations
+                                        orderby r.Customer
+                                        select new { Customer = r.Customers.LastName + " " + r.Customers.FirstName, ID = r.ReservID }); ;
+            
+                var reservationsList = reservations.ToList();
+                reservationsList.Clear();
 
-            var reservationsList = reservations.ToList();
-            reservationsList.Clear();
+                SearchReservList.Visibility = Visibility.Collapsed;
+                SearchReservList.ItemsSource = null;
 
-            SearchReservList.Visibility = Visibility.Collapsed;
-            SearchReservList.ItemsSource = null;
-
-            string txt = (sender as TextBox).Text.ToLower();
-            if (txt != "")
-            {
-                SearchReservList.Visibility = Visibility.Visible;
-                foreach (var e in reservations.ToList())
+                string txt = (sender as TextBox).Text.ToLower();
+                if (txt != "")
                 {
-                    var names = e.Customer.ToLower().Split();
-                    try
+                    SearchReservList.Visibility = Visibility.Visible;
+                    foreach (var e in reservations.ToList())
                     {
-                        if (int.TryParse(txt, out int ID))
+                        var names = e.Customer.ToLower().Split();
+                        try
                         {
-                            if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                            if (int.TryParse(txt, out int ID))
+                            {
+                                if (DataGridTools.CheckString(e.ID.ToString(), ID.ToString()))
+                                {
+                                    reservationsList.Add(e);
+                                }
+                            }
+
+                            if (DataGridTools.CheckString(names[0], txt))
                             {
                                 reservationsList.Add(e);
                             }
+                            if (DataGridTools.CheckString(names[1], txt))
+                            {
+                                if (!reservationsList.Exists(elem => elem == e))
+                                    reservationsList.Add(e);
+                            }
                         }
+                        catch (IndexOutOfRangeException)
+                        {
+                        }
+                    }
 
-                        if (DataGridTools.CheckString(names[0], txt))
-                        {
-                            reservationsList.Add(e);
-                        }
-                        if (DataGridTools.CheckString(names[1], txt))
-                        {
-                            if (!reservationsList.Exists(elem => elem == e))
-                                reservationsList.Add(e);
-                        }
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
-                    }
+                    SearchReservList.ItemsSource = reservationsList;
                 }
-
-                SearchReservList.ItemsSource = reservationsList;
-            }
         }
 
         private void ReservDataGridSearchRowClick(object sender, MouseButtonEventArgs e)

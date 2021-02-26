@@ -172,7 +172,7 @@ namespace HotelManager
         {
             var reservations = (from r in context.Reservations
                                 orderby r.Customer
-                                select new { Customer = context.Customers.Find(r.Customer).LastName + " " + context.Customers.Find(r.Customer).FirstName, ID = r.ReservID }); ;
+                                select new { Customer = r.Customers.LastName + " " + r.Customers.FirstName, ID = r.ReservID }); ;
 
             var reservationsList = reservations.ToList();
             reservationsList.Clear();

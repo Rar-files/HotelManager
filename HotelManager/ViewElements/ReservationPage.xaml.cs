@@ -15,6 +15,9 @@ namespace HotelManager
     public partial class ReservationPage : Page
     {
         HotelDBEntities context = new HotelDBEntities();
+        CollectionViewSource roomViewSource;
+        CollectionViewSource empViewSource;
+        CollectionViewSource custViewSource;
         CollectionViewSource reservViewSource;
         Reservations initial = null;
 
@@ -22,37 +25,54 @@ namespace HotelManager
         {
             InitializeComponent();
             reservViewSource = ((CollectionViewSource)(this.FindResource("reservationsViewSource")));
+            custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
+            empViewSource = ((CollectionViewSource)(this.FindResource("employeesViewSource")));
+            roomViewSource = ((CollectionViewSource)(this.FindResource("roomsViewSource")));
             DataContext = this;
         }
         public ReservationPage(int resrvID)
         {
             InitializeComponent();
             reservViewSource = ((CollectionViewSource)(this.FindResource("reservationsViewSource")));
+            custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
+            empViewSource = ((CollectionViewSource)(this.FindResource("employeesViewSource")));
+            roomViewSource = ((CollectionViewSource)(this.FindResource("roomsViewSource")));
             DataContext = this;
             initial = context.Reservations.Find(resrvID);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            context.Reservations.Load();
             context.Customers.Load();
-            reservViewSource.Source = context.Customers.Local;
+            context.Rooms.Load();
+            context.Employees.Load();
+            reservViewSource.Source = context.Reservations.Local;
+            empViewSource.Source = context.Employees.Local;
+            roomViewSource.Source = context.Rooms.Local;
+
+            if (initial != null)
+                reservViewSource.View.MoveCurrentTo(initial);
+            else
+                initial = reservViewSource.View.CurrentItem as Reservations;
+
+            custViewSource.View.MoveCurrentTo(initial.Customers);
+            empViewSource.View.MoveCurrentTo(initial.Employees);
+            roomViewSource.View.MoveCurrentTo(initial.Rooms);
         }
 
 
         //Buttons
-        private void DeleteCustomerCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        private void DeleteCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var reservations = reservViewSource.View.CurrentItem as Reservations;
 
-            var reserv = (from r in context.Reservations
-                            where r.ReservID == reservations.ReservID
-                            select r).FirstOrDefault();
+            context.Reservations.Remove(reservations);
 
-            int currentID = reserv.ReservID;
-
-            context.Database.ExecuteSqlCommand($"DBCC CHECKIDENT('Reservations', RESEED, {currentID - 1})");
             context.SaveChanges();
-            reservViewSource.View.Refresh();
+            var mainPage = new MainPage();
+            var window = (Window)this.Parent;
+            window.Content = mainPage;
         }
 
 
@@ -61,10 +81,12 @@ namespace HotelManager
 
             var currentReservation = reservViewSource.View.CurrentItem as Reservations;
 
-            //if (currentReservation != null)
-            //{
-            //    currentReservation.Room = 
-            //}
+            if (currentReservation != null)
+            {
+                currentReservation.AdditionalInfo = additionalInfoTextBox.Text;
+                currentReservation.BookingFrom = bookingFromDatePicker.DisplayDate;
+                currentReservation.BookingTo = bookingToDatePicker.DisplayDate;
+            }
 
 
             context.SaveChanges();
@@ -161,7 +183,7 @@ namespace HotelManager
         {
             var reservations = (from r in context.Reservations
                                 orderby r.Customer
-                                select new { Customer = context.Customers.Find(r.Customer).LastName + " " + context.Customers.Find(r.Customer).FirstName, ID = r.ReservID }); ;
+                                select new { Customer = r.Customers.LastName + " " + r.Customers.FirstName, ID = r.ReservID }); ;
 
             var reservationsList = reservations.ToList();
             reservationsList.Clear();
