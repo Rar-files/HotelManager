@@ -56,9 +56,9 @@ namespace HotelManager
             else
                 initial = reservViewSource.View.CurrentItem as Reservations;
 
-            custViewSource.View.MoveCurrentTo(initial.Customers);
-            empViewSource.View.MoveCurrentTo(initial.Employees);
-            roomViewSource.View.MoveCurrentTo(initial.Rooms);
+            custViewSource.View.MoveCurrentTo(context.Reservations.Find(initial.Customer));
+            empViewSource.View.MoveCurrentTo(context.Employees.Find(initial.AddBy));
+            roomViewSource.View.MoveCurrentTo(context.Rooms.Find(initial.Room));
         }
 
 

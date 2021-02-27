@@ -88,7 +88,7 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
                 <Label Content="Reserv ID:" Margin="0,3,0,3" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Center"/>
@@ -100,8 +100,8 @@
                 <Label Content="Room:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
                 <DataGrid x:Name="roomsDataGrid" Margin="3"  Grid.Column="1" Grid.Row="2" DisplayMemberPath="Rooms" ItemsSource="{Binding}" DataContext="{StaticResource roomsViewSource}"/>
 
-                <StackPanel Margin="0,3,0,3" Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
-                    <Label Content="Booking From:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="Booking From:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <StackPanel Margin="3" Orientation="Horizontal" Grid.Row="3" Grid.Column="1" >
                     <DatePicker x:Name="bookingFromDatePicker" HorizontalAlignment="Left" SelectedDate="{Binding BookingFrom, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
                     <Label Content="Booking To:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     <DatePicker x:Name="bookingToDatePicker" HorizontalAlignment="Left" SelectedDate="{Binding BookingTo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
@@ -111,7 +111,7 @@
                 <DataGrid x:Name="employeesDataGrid" Margin="3"  Grid.Column="1" DisplayMemberPath="Employees" Grid.Row="4" ItemsSource="{Binding}" DataContext="{StaticResource employeesViewSource}"/>
 
                 <Label Content="Additional Info:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Top"/>
-                <TextBox x:Name="additionalInfoTextBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="5" Text="{Binding AdditionalInfo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="200" Height="140"/>
+                <TextBox x:Name="additionalInfoTextBox" Margin="3" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="5" Text="{Binding AdditionalInfo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="314" Height="140"/>
            </Grid>
 
             <Grid Grid.Column="1" Background="#1D2529">
