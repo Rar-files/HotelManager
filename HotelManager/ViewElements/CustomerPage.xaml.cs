@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +14,9 @@ namespace HotelManager
     /// </summary>
     public partial class CustomerPage : Page
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource custViewSource;
         CollectionViewSource reservViewSource;
@@ -28,6 +30,13 @@ namespace HotelManager
             DataContext = this;
         }
 
+        /// <summary>
+        /// Konstruktor, który również ustawia widok na profil kienta.
+        /// </summary>
+        /// <remarks>
+        /// Ustawia zmienną initial jako klienta o podanym id jako parametr.
+        /// </remarks>
+        /// <param name="customerID"> Konstruktor przyjmuje ID klienta i ustawia aktualny widok jako podanego klienta</param>
         public CustomerPage(int customerID)
         {
             InitializeComponent();
@@ -37,20 +46,31 @@ namespace HotelManager
             initial = context.Customers.Find(customerID);
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// <para>Wczytuje zestawy danych.</para>
+        /// <para>Ustawia widok na element initial</para>
+        /// </remarks>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
-            // customersViewSource.Źródło = [ogólne źródło danych]
             context.Customers.Load();
+            context.Employees.Load();
             custViewSource.Source = context.Customers.Local;
-            if(initial != null)
+            reservViewSource.Source = context.Employees.Local;
+            if (initial != null)
                 custViewSource.View.MoveCurrentTo(initial);
         }
 
+
+        /*Buttons*/
+
+        /// <summary>
+        /// Usuwa profil klienta oraz jego rezerwacje.
+        /// </summary>
         private void DeleteCustomerCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            // If existing window is visible, delete the customer and all their orders.  
-            // In a real application, you should add warnings and allow the user to cancel the operation.  
             var customers = custViewSource.View.CurrentItem as Customers;
 
             var customer = (from c in context.Customers
@@ -64,6 +84,7 @@ namespace HotelManager
                 foreach (var reserv in customer.Reservations.ToList())
                 {
                     customer.Reservations.Remove(reserv);
+                    context.Reservations.Remove(reserv);
                 }
                 context.Customers.Remove(customer);
             }
@@ -72,14 +93,16 @@ namespace HotelManager
             custViewSource.View.Refresh();
         }
 
-        // Commit changes from the new customer form, the new order form,  
-        // or edits made to the existing customer form.  
+        /// <summary>
+        /// Zapisuje zmiany w aktualnie otwartym kliencie.
+        /// </summary>
+        /// <remarks>
+        /// <para>Pobiera aktualnego klienta.</para>
+        /// <para>Zmienia wartości pól aktualnego urzytkownika, na wpisane w textbox.</para>
+        /// <para>Nadpisuje klienta w bazie danych</para>
+        /// </remarks>
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-
-            // Order ID is auto-generated so we don't set it here.  
-            // For CustomerID, address, etc we use the values from current customer.  
-            // User can modify these in the datagrid after the order is entered.  
             var currentCustomer = custViewSource.View.CurrentItem as Customers;
 
             if (currentCustomer != null)
@@ -99,21 +122,24 @@ namespace HotelManager
                 currentCustomer.Country = countryTextBox.Text;
                 currentCustomer.AdditionalInfo = additionalInfoTextBox.Text;
             }
-
-
-            // Save the changes, either for a new customer, a new order  
-            // or an edit to an existing customer or order.
             context.SaveChanges();
             custViewSource.View.Refresh();
         }
 
-        // Sets up the form so that user can enter data. Data is later  
-        // saved when user clicks Commit.  
+        /// <summary>
+        /// Otwiera okno NewRoomClassWindow.
+        /// </summary>
         private void AddCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewCustomerWindow().Show();
         }
 
+        /// <summary>
+        /// Zamyka stonę klienta.
+        /// </summary>
+        /// <remarks>
+        /// Ładuje stronę główną do okna aplikacji.
+        /// </remarks>
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var mainPage = new MainPage();
@@ -122,7 +148,11 @@ namespace HotelManager
         }
 
 
-        //SearchBar
+        /*SearchBar*/
+
+        /// <summary>
+        /// Dodaje do customersList DataGrid, rekordy spełniające wpisany warunek w TextBox customerSearch.
+        /// </summary>
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var customers = (from c in context.Customers
@@ -172,6 +202,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchCustomersList DataGrid i otwiera wybranego klienta w stronie CustomerPage.
+        /// </summary>
         private void CustomerDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -195,6 +228,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do reservationsList DataGrid, rekordy spełniające wpisany warunek w TextBox reservationSearch.
+        /// </summary>
         private void ReservSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var reservations = (from r in context.Reservations
@@ -243,6 +279,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchReservList DataGrid i otwiera wybraną rezerwacje w stronie ReservationPage.
+        /// </summary>
         private void ReservDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -266,6 +305,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do SearchEmpList DataGrid, rekordy spełniające wpisany warunek w TextBox employerSearch.
+        /// </summary>
         private void EmpSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var emps = (from e in context.Employees
@@ -315,6 +357,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchEmpList DataGrid i otwiera wybranego pracownika w stronie EmployePage.
+        /// </summary>
         private void EmpDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text;
@@ -339,6 +384,4 @@ namespace HotelManager
         }
 
     }
-
-
 }

@@ -11,8 +11,6 @@
 
     <Page.Resources>
         <CollectionViewSource x:Key="reservationsViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Reservations}, CreateList=True}"/>
-        <CollectionViewSource x:Key="employeesViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Employees}, CreateList=True}"/>
-        <CollectionViewSource x:Key="roomsViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Rooms}, CreateList=True}"/>
         <RoutedUICommand x:Key="AddCommand" Text="Add"/>
         <RoutedUICommand x:Key="DeleteCommand" Text="Delete"/>
         <RoutedUICommand x:Key="UpdateCommand" Text="Update"/>
@@ -95,10 +93,10 @@
                 <Label x:Name="reservIDLabel" Content="{Binding ReservID}" Margin="0,3,0,3" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Center"/>
 
                 <Label Content="Customer:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
-                <DataGrid x:Name="customersDataGrid" Margin="3" Grid.Row="1" Grid.Column="1" DisplayMemberPath="Customers" ItemsSource="{Binding}" DataContext="{StaticResource customersViewSource}"/>
+                <DataGrid x:Name="customersDataGrid" Margin="3" Grid.Row="1" Grid.Column="1" DisplayMemberPath="Customers"/>
 
                 <Label Content="Room:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
-                <DataGrid x:Name="roomsDataGrid" Margin="3"  Grid.Column="1" Grid.Row="2" DisplayMemberPath="Rooms" ItemsSource="{Binding}" DataContext="{StaticResource roomsViewSource}"/>
+                <DataGrid x:Name="roomsDataGrid" Margin="3"  Grid.Column="1" Grid.Row="2" DisplayMemberPath="Rooms"/>
 
                 <Label Content="Booking From:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <StackPanel Margin="3" Orientation="Horizontal" Grid.Row="3" Grid.Column="1" >
@@ -108,7 +106,7 @@
                 </StackPanel>
 
                 <Label Content="Add By:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Top"/>
-                <DataGrid x:Name="employeesDataGrid" Margin="3"  Grid.Column="1" DisplayMemberPath="Employees" Grid.Row="4" ItemsSource="{Binding}" DataContext="{StaticResource employeesViewSource}"/>
+                <DataGrid x:Name="employeesDataGrid" Margin="3"  Grid.Column="1" DisplayMemberPath="Employees" Grid.Row="4"/>
 
                 <Label Content="Additional Info:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Top"/>
                 <TextBox x:Name="additionalInfoTextBox" Margin="3" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="5" Text="{Binding AdditionalInfo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="314" Height="140"/>

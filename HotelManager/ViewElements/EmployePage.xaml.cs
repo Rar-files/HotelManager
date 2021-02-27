@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +13,9 @@ namespace HotelManager
     /// </summary>
     public partial class EmployePage : Page
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource empViewSource;
         Employees initial = null;
@@ -25,6 +27,13 @@ namespace HotelManager
             DataContext = this;
         }
 
+        /// <summary>
+        /// Konstruktor, który również ustawia widok na profil pracownika.
+        /// </summary>
+        /// <remarks>
+        /// Ustawia zmienną initial jako pracownika o podanym id jako parametr.
+        /// </remarks>
+        /// <param name="EmpID">Konstruktor przyjmuje ID pracownika i ustawia aktualny widok jako podanego pracownika</param>
         public EmployePage(int EmpID)
         {
             InitializeComponent();
@@ -33,10 +42,16 @@ namespace HotelManager
             initial = context.Employees.Find(EmpID);
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// <para>Wczytuje zestawy danych.</para>
+        /// <para>Ustawia widok na element initial</para>
+        /// <para>Ustawia widoczność elementów Admin</para>
+        /// </remarks>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
-            // customersViewSource.Źródło = [ogólne źródło danych]
             context.Employees.Load();
             empViewSource.Source = context.Employees.Local;
             if (initial != null)
@@ -49,22 +64,38 @@ namespace HotelManager
             }
         }
 
+
+        /*Buttons*/
+
+        /// <summary>
+        /// Otwiera okno NewEmpWindow.
+        /// </summary>
         private void AddCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewEmpWindow().Show();
         }
 
+        /// <summary>
+        /// Usuwa profil pracownika oraz jego rezerwacje.
+        /// </summary>
         private void DeleteCustomerCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var emp = empViewSource.View.CurrentItem as Employees;
 
             context.Employees.Remove(emp);
 
-            context.Database.ExecuteSqlCommand($"DBCC CHECKIDENT('Customers', RESEED, {context.Employees.Count() - 1})");
             context.SaveChanges();
             empViewSource.View.Refresh();
         }
 
+        /// <summary>
+        /// Zapisuje zmiany w aktualnie otwartym pracowniku.
+        /// </summary>
+        /// <remarks>
+        /// <para>Pobiera aktualnego pracownika.</para>
+        /// <para>Zmienia wartości pól aktualnego pracownika, na wpisane w textbox.</para>
+        /// <para>Nadpisuje pracownika w bazie danych</para>
+        /// </remarks>
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var emp = empViewSource.View.CurrentItem as Employees;
@@ -87,6 +118,12 @@ namespace HotelManager
             empViewSource.View.Refresh();
         }
 
+        /// <summary>
+        /// Zamyka stonę pracownika.
+        /// </summary>
+        /// <remarks>
+        /// Ładuje stronę główną do okna aplikacji.
+        /// </remarks>
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var mainPage = new MainPage();
@@ -95,7 +132,11 @@ namespace HotelManager
         }
 
 
-        //SearchBar
+        /*SearchBar*/
+
+        /// <summary>
+        /// Dodaje do customersList DataGrid, rekordy spełniające wpisany warunek w TextBox customerSearch.
+        /// </summary>
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var customers = (from c in context.Customers
@@ -145,6 +186,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchCustomersList DataGrid i otwiera wybranego klienta w stronie CustomerPage.
+        /// </summary>
         private void CustomerDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -168,6 +212,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do reservationsList DataGrid, rekordy spełniające wpisany warunek w TextBox reservationSearch.
+        /// </summary>
         private void ReservSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var reservations = (from r in context.Reservations
@@ -216,6 +263,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchReservList DataGrid i otwiera wybraną rezerwacje w stronie ReservationPage.
+        /// </summary>
         private void ReservDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -239,6 +289,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do SearchEmpList DataGrid, rekordy spełniające wpisany warunek w TextBox employerSearch.
+        /// </summary>
         private void EmpSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var emps = (from e in context.Employees
@@ -288,6 +341,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchEmpList DataGrid i otwiera wybranego pracownika w stronie EmployePage.
+        /// </summary>
         private void EmpDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text;

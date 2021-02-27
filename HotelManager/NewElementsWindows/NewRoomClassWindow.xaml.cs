@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Data.Entity;
-using System.Windows.Shapes;
 
 namespace HotelManager
 {
@@ -20,6 +9,9 @@ namespace HotelManager
     /// </summary>
     public partial class NewRoomClassWindow : Window
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
 
         public NewRoomClassWindow()
@@ -28,11 +20,28 @@ namespace HotelManager
             DataContext = this;
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// Wczytuje zestawy danych.
+        /// </remarks>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             context.RoomsClass.Load();
         }
 
+
+        /*Buttons*/
+
+        /// <summary>
+        /// Tworzy nową klasę pokoju.
+        /// </summary>
+        /// <remarks>
+        /// <para>Tworzy nową klasę pokoju.</para>
+        /// <para>Ustawia wartości pól nowej klasy, na wpisane w textbox oraz zapisane do zmiennych</para>
+        /// <para>Zapisuje klasę w bazie danych</para>
+        /// </remarks>
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var roomClass = new RoomsClass
@@ -50,6 +59,9 @@ namespace HotelManager
             this.Close();
         }
 
+        /// <summary>
+        /// Zamyka okno.
+        /// </summary>
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();

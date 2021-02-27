@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Data.Entity;
@@ -14,6 +10,9 @@ namespace HotelManager
     /// </summary>
     public partial class RoomWindow : Window
     {
+        /// <summary>
+        /// Logika interakcji dla klasy EmployePage.xaml
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource roomViewSource;
         CollectionViewSource roomClassViewSource;
@@ -28,10 +27,14 @@ namespace HotelManager
             DataContext = this;
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// Wczytuje zestawy danych.
+        /// </remarks>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
-            // customersViewSource.Źródło = [ogólne źródło danych]
             context.Rooms.Load();
             context.RoomsClass.Load();
             roomViewSource.Source = context.Rooms.Local;
@@ -39,18 +42,30 @@ namespace HotelManager
             roomClassViewSource.View.MoveCurrentTo(context.RoomsClass.Find((roomViewSource.View.CurrentItem as Rooms).Class));
         }
 
+
+        /*Buttons*/
+
+        /// <summary>
+        /// Zamyka okno.
+        /// </summary>
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             getCurrentRoom = (roomViewSource.View.CurrentItem as Rooms).RoomID;
             this.Close();
         }
 
+        /// <summary>
+        /// Zmiana aktualnego pokoju, na poprzedni.
+        /// </summary>
         private void PrevCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (roomViewSource.View.MoveCurrentToPrevious())
                 roomClassViewSource.View.MoveCurrentTo(context.RoomsClass.Find((roomViewSource.View.CurrentItem as Rooms).Class));
         }
 
+        /// <summary>
+        /// Zmiana aktualnego pokoju, na następny.
+        /// </summary>
         private void NextCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if(roomViewSource.View.MoveCurrentToNext())

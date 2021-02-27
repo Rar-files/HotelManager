@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace HotelManager
 {
@@ -14,10 +14,10 @@ namespace HotelManager
     /// </summary>
     public partial class ReservationPage : Page
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
-        CollectionViewSource roomViewSource;
-        CollectionViewSource empViewSource;
-        CollectionViewSource custViewSource;
         CollectionViewSource reservViewSource;
         Reservations initial = null;
 
@@ -25,22 +25,34 @@ namespace HotelManager
         {
             InitializeComponent();
             reservViewSource = ((CollectionViewSource)(this.FindResource("reservationsViewSource")));
-            custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
-            empViewSource = ((CollectionViewSource)(this.FindResource("employeesViewSource")));
-            roomViewSource = ((CollectionViewSource)(this.FindResource("roomsViewSource")));
             DataContext = this;
         }
+
+        /// <summary>
+        /// Konstruktor, który również ustawia widok na podaną rezerwacje.
+        /// </summary>
+        /// <remarks>
+        /// Ustawia zmienną initial jako rezerwacje o podanym id jako parametr.
+        /// </remarks>
+        /// <param name="resrvID">Konstruktor przyjmuje ID rezerwacji i ustawia aktualny widok jako podaną rezerwacje</param>
         public ReservationPage(int resrvID)
         {
             InitializeComponent();
             reservViewSource = ((CollectionViewSource)(this.FindResource("reservationsViewSource")));
-            custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
-            empViewSource = ((CollectionViewSource)(this.FindResource("employeesViewSource")));
-            roomViewSource = ((CollectionViewSource)(this.FindResource("roomsViewSource")));
             DataContext = this;
             initial = context.Reservations.Find(resrvID);
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// <para>Wczytuje zestawy danych.</para>
+        /// <para>Ustawia widok na element initial</para>
+        /// <para> Wpisuje do customersDataGrid powiązanego klienta</para>
+        /// <para> Wpisuje do roomsDataGrid powiązany pokój</para>
+        /// <para> Wpisuje do employeesDataGrid powiązanego pracownika</para>
+        /// </remarks>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             context.Reservations.Load();
@@ -48,21 +60,23 @@ namespace HotelManager
             context.Rooms.Load();
             context.Employees.Load();
             reservViewSource.Source = context.Reservations.Local;
-            empViewSource.Source = context.Employees.Local;
-            roomViewSource.Source = context.Rooms.Local;
 
             if (initial != null)
                 reservViewSource.View.MoveCurrentTo(initial);
             else
                 initial = reservViewSource.View.CurrentItem as Reservations;
 
-            custViewSource.View.MoveCurrentTo(context.Reservations.Find(initial.Customer));
-            empViewSource.View.MoveCurrentTo(context.Employees.Find(initial.AddBy));
-            roomViewSource.View.MoveCurrentTo(context.Rooms.Find(initial.Room));
+            customersDataGrid.ItemsSource = new List<Customers> { initial.Customers };
+            roomsDataGrid.ItemsSource = new List<Rooms> { initial.Rooms };
+            employeesDataGrid.ItemsSource = new List<Employees> { initial.Employees };
         }
 
 
-        //Buttons
+        /*Buttons*/
+
+        /// <summary>
+        /// Usuwa rezerwacje.
+        /// </summary>
         private void DeleteCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var reservations = reservViewSource.View.CurrentItem as Reservations;
@@ -75,10 +89,16 @@ namespace HotelManager
             window.Content = mainPage;
         }
 
-
+        /// <summary>
+        /// Zapisuje zmiany w aktualnie otwartej rezerwacji.
+        /// </summary>
+        /// <remarks>
+        /// <para>Pobiera aktualneą rezerwacje.</para>
+        /// <para>Zmienia wartości pól aktualnej rezerwacji, na wpisane w textbox.</para>
+        /// <para>Nadpisuje rezerwacje w bazie danych</para>
+        /// </remarks>
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-
             var currentReservation = reservViewSource.View.CurrentItem as Reservations;
 
             if (currentReservation != null)
@@ -93,11 +113,20 @@ namespace HotelManager
             reservViewSource.View.Refresh();
         }
 
+        /// <summary>
+        /// Otwiera okno NewReservationWindow.
+        /// </summary>
         private void AddCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewReservationWindow().Show();
         }
 
+        /// <summary>
+        /// Zamyka stonę rezeracji.
+        /// </summary>
+        /// <remarks>
+        /// Ładuje stronę główną do okna aplikacji.
+        /// </remarks>
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var mainPage = new MainPage();
@@ -106,7 +135,11 @@ namespace HotelManager
         }
 
 
-        //SearchBar
+        /*SearchBar*/
+
+        /// <summary>
+        /// Dodaje do customersList DataGrid, rekordy spełniające wpisany warunek w TextBox customerSearch.
+        /// </summary>
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var customers = (from c in context.Customers
@@ -156,6 +189,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchCustomersList DataGrid i otwiera wybranego klienta w stronie CustomerPage.
+        /// </summary>
         private void CustomerDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -179,6 +215,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do reservationsList DataGrid, rekordy spełniające wpisany warunek w TextBox reservationSearch.
+        /// </summary>
         private void ReservSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var reservations = (from r in context.Reservations
@@ -227,6 +266,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchReservList DataGrid i otwiera wybraną rezerwacje w stronie ReservationPage.
+        /// </summary>
         private void ReservDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -250,6 +292,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do SearchEmpList DataGrid, rekordy spełniające wpisany warunek w TextBox employerSearch.
+        /// </summary>
         private void EmpSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var emps = (from e in context.Employees
@@ -299,6 +344,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchEmpList DataGrid i otwiera wybranego pracownika w stronie EmployePage.
+        /// </summary>
         private void EmpDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text;

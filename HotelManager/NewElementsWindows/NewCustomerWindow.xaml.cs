@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Data.Entity;
 
 namespace HotelManager
@@ -20,6 +10,9 @@ namespace HotelManager
     /// </summary>
     public partial class NewCustomerWindow : Window
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
         CollectionViewSource custViewSource;
 
@@ -30,12 +23,29 @@ namespace HotelManager
             DataContext = this;
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// Wczytuje zestawy danych.
+        /// </remarks>
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
             context.Customers.Load();
             custViewSource.Source = context.Customers.Local;
         }
 
+
+        /*Buttons*/
+
+        /// <summary>
+        /// Tworzy nowego klienta.
+        /// </summary>
+        /// <remarks>
+        /// <para>Tworzy nowego klienta.</para>
+        /// <para>Ustawia wartości pól nowego klienta, na wpisane w textbox.</para>
+        /// <para>Zapisuje klienta w bazie danych</para>
+        /// </remarks>
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             Customers newCustomer = new Customers
@@ -61,6 +71,9 @@ namespace HotelManager
             this.Close();
         }
 
+        /// <summary>
+        /// Zamyka okno.
+        /// </summary>
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();

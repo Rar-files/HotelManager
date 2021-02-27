@@ -13,23 +13,29 @@ namespace HotelManager
     /// </summary>
     public partial class MainPage : Page
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
-        CollectionViewSource custViewSource;
 
         public MainPage()
         {
             InitializeComponent();
-            custViewSource = ((CollectionViewSource)(this.FindResource("customersViewSource")));
             DataContext = this;
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// <para>Wczytuje zestawy danych.</para>
+        /// <para>Ustawia widoczność elementów Admin</para>
+        /// </remarks>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
-            // customersViewSource.Źródło = [ogólne źródło danych]
             context.Customers.Load();
             context.Reservations.Load();
-            custViewSource.Source = context.Customers.Local;
+            context.Employees.Load();
             if (App.adminFlag)
             {
                 adminStatus.Visibility = Visibility.Visible;
@@ -39,6 +45,16 @@ namespace HotelManager
             }
         }
 
+
+        /*Admin Tools*/
+
+        /// <summary>
+        /// Przełącza tryb aplikacji z normalnego na tryb admina.
+        /// </summary>
+        /// <remarks>
+        /// <para>Zmienia wartość zmiennej adminFlag.</para>
+        /// <para>Zmiania Visibility property dla admin obiektów.</para>
+        /// </remarks>
         private void AdminModeToggle(object sender, MouseButtonEventArgs e)
         {
             if(adminStatus.Visibility == Visibility.Visible)
@@ -59,11 +75,20 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Uruchamia HardRreset bazy danych.
+        /// </summary>
+        /// <remarks>
+        /// Wyświetla okno z wyborem elementów do resetu.
+        /// </remarks>
         private void HardResetHandler(object sender, MouseButtonEventArgs e)
         {
             ResetPopUp.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Usuwa rekordy z wszystkich tabel.
+        /// </summary>
         private void HardResetHandler(object sender, RoutedEventArgs e)
         {
             context.Customers.RemoveRange(context.Set<Customers>());
@@ -75,6 +100,9 @@ namespace HotelManager
             ResetPopUp.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Usuwa rekordy z tabeli rezerwacji i klientów.
+        /// </summary>
         private void ResetHandler(object sender, RoutedEventArgs e)
         {
             context.Customers.RemoveRange(context.Set<Customers>());
@@ -82,38 +110,64 @@ namespace HotelManager
             context.SaveChanges();
             ResetPopUp.Visibility = Visibility.Collapsed;
         }
+
+        /// <summary>
+        /// Zamyka okno resetu.
+        /// </summary>
         private void CloseResetPopUpHandler(object sender, RoutedEventArgs e)
         {
             ResetPopUp.Visibility = Visibility.Collapsed;
         }
 
+
+        /*New Window Buttons*/
+
+        /// <summary>
+        /// Otwiera okno NewReservationWindow.
+        /// </summary>
         private void AddReservationHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewReservationWindow().Show();
         }
 
+        /// <summary>
+        /// Otwiera okno NewCustomerWindow
+        /// </summary>
         private void AddCustomerHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewCustomerWindow().Show();
         }
 
+        /// <summary>
+        /// Otwiera okno NewRoomWindow.
+        /// </summary>
         private void AddRoomHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewRoomWindow().Show();
         }
 
+        /// <summary>
+        /// Otwiera okno NewRoomClassWindow.
+        /// </summary>
         private void AddRoomClassHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewRoomClassWindow().Show();
         }
 
+        /// <summary>
+        /// Otwiera okno NewEmpWindow.
+        /// </summary>
         private void AddEmpHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new NewEmpWindow().Show();
         }
 
 
-        //SearchBar
+        /*SearchBar*/
+
+        /// <summary>
+        /// Dodaje do customersList DataGrid, rekordy spełniające wpisany warunek w TextBox customerSearch.
+        /// </summary>
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var customers = (from c in context.Customers
@@ -163,6 +217,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchCustomersList DataGrid i otwiera wybranego klienta w stronie CustomerPage.
+        /// </summary>
         private void CustomerDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -186,6 +243,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do reservationsList DataGrid, rekordy spełniające wpisany warunek w TextBox reservationSearch.
+        /// </summary>
         private void ReservSearchTextChanged(object sender, TextChangedEventArgs args)
         {
                     var reservations = (from r in context.Reservations
@@ -234,6 +294,9 @@ namespace HotelManager
                 }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchReservList DataGrid i otwiera wybraną rezerwacje w stronie ReservationPage.
+        /// </summary>
         private void ReservDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -257,6 +320,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Dodaje do SearchEmpList DataGrid, rekordy spełniające wpisany warunek w TextBox employerSearch.
+        /// </summary>
         private void EmpSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             var emps = (from e in context.Employees
@@ -306,6 +372,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchEmpList DataGrid i otwiera wybranego pracownika w stronie EmployePage.
+        /// </summary>
         private void EmpDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text;

@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Data.Entity;
 
 namespace HotelManager
@@ -20,6 +12,9 @@ namespace HotelManager
     /// </summary>
     public partial class NewRoomWindow : Window
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
         RoomsClass roomClass;
         bool classChecked = false;
@@ -30,13 +25,28 @@ namespace HotelManager
             DataContext = this;
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// Wczytuje zestawy danych.
+        /// </remarks>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Załaduj dane poprzez ustawienie właściwości CollectionViewSource.Source:
-            // roomsViewSource.Źródło = [ogólne źródło danych]
             context.Rooms.Load();
         }
 
+
+        /*Buttons*/
+
+        /// <summary>
+        /// Tworzy nowy pokój.
+        /// </summary>
+        /// <remarks>
+        /// <para>Tworzy nowy pokój.</para>
+        /// <para>Ustawia wartości pól nowego pokój, na wpisane w textbox oraz zapisane do zmiennych</para>
+        /// <para>Zapisuje pokój w bazie danych</para>
+        /// </remarks>
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (roomClass != null & numberTextBox.Text != null)
@@ -55,12 +65,20 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Zamyka okno.
+        /// </summary>
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();
         }
 
-        //Search Class
+
+        /*SearchBox*/
+
+        /// <summary>
+        /// Dodaje do SearchClassList DataGrid, rekordy spełniające wpisany warunek w TextBox classTextBox.
+        /// </summary>
         private void ClassSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!classChecked)
@@ -112,6 +130,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchClassList DataGrid i zapisuje wybraną klase do zmiennej.
+        /// </summary>
         private void ClassDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();

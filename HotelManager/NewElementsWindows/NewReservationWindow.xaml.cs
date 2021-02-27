@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Data.Entity;
 
@@ -14,6 +12,9 @@ namespace HotelManager
     /// </summary>
     public partial class NewReservationWindow : Window
     {
+        /// <summary>
+        /// Data Entity context.
+        /// </summary>
         HotelDBEntities context = new HotelDBEntities();
         Customers currentCustomer;
         Employees currentEmployer;
@@ -27,12 +28,29 @@ namespace HotelManager
             DataContext = this;
         }
 
+        /// <summary>
+        /// Event ładuje elementy strony.
+        /// </summary>
+        /// <remarks>
+        /// Wczytuje zestawy danych.
+        /// </remarks>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             context.Reservations.Load();
             context.Rooms.Load();
         }
 
+
+        /*Buttons*/
+
+        /// <summary>
+        /// Tworzy nową rezerwacje.
+        /// </summary>
+        /// <remarks>
+        /// <para>Tworzy nową rezerwacje.</para>
+        /// <para>Ustawia wartości pól nowej rezerwacji, na wpisane w textbox oraz zapisane do zmiennych</para>
+        /// <para>Zapisuje klasę w bazie danych</para>
+        /// </remarks>
         private void UpdateCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (currentCustomer != null & currentRoom != null & currentEmployer != null & bookingFromDatePicker.DisplayDate != null & bookingToDatePicker.DisplayDate != null)
@@ -53,11 +71,22 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Zamyka okno.
+        /// </summary>
         private void CancelCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Wyświetla okno pokoju, oraz wczytuje wybraną wartość w otwartym oknie.
+        /// </summary>
+        /// <remarks>
+        /// <para>Wyświetla okno pooju.</para>
+        /// <para>Czeka na wybranie i zamknięcie okna</para>
+        /// <para>Wpisuje wybrany pokój do zmiennej</para>
+        /// </remarks>
         private void ChooseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             var roomWin = new RoomWindow();
@@ -69,7 +98,11 @@ namespace HotelManager
         }
 
 
-        //SearchBar
+        /*SearchBoxs*/
+
+        /// <summary>
+        /// Dodaje do SearchCustomersList DataGrid, rekordy spełniające wpisany warunek w customerSearch TextBox.
+        /// </summary>
         private void CustomerSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!customerChecked)
@@ -126,6 +159,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchCustomersList DataGrid i zapisuje wybraną klase do zmiennej.
+        /// </summary>
         private void CustomerDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text.ToLower();
@@ -149,7 +185,9 @@ namespace HotelManager
             }
         }
 
-
+        /// <summary>
+        /// Dodaje do SearchEmpList DataGrid, rekordy spełniające wpisany warunek w empTextBlock TextBox.
+        /// </summary>
         private void EmpSearchTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!employerChecked)
@@ -206,6 +244,9 @@ namespace HotelManager
             }
         }
 
+        /// <summary>
+        /// Event intepretuje wybrany rekord z SearchEmpList DataGrid i zapisuje wybraną klase do zmiennej.
+        /// </summary>
         private void EmpDataGridSearchRowClick(object sender, MouseButtonEventArgs e)
         {
             var txt = (e.OriginalSource as TextBlock).Text;

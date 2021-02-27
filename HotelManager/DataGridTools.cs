@@ -4,6 +4,9 @@ using System.Windows.Media;
 
 namespace HotelManager
 {
+    /// <summary>
+    /// Klasa zawiera narzędzia do obsługi DataGrid
+    /// </summary>
     public static class DataGridTools
     {
         public static DataGridRow GetSelectedRow(this DataGrid grid)
@@ -59,12 +62,23 @@ namespace HotelManager
             }
             return child;
         }
+
         public static DataGridCell GetCell(this DataGrid grid, int row, int column)
         {
             DataGridRow rowContainer = GetRow(grid, row);
             return GetCell(grid, rowContainer, column);
         }
 
+        /// <summary>
+        /// Porównuje czy pierwszy string zawiera się w drugim
+        /// </summary>
+        /// <remarks>
+        /// <para>Rzutuje stringi do tablic znaków</para>
+        /// <para>Iteruje obydwa stringi i porównuje czy znaki się zgadzają</para>
+        /// </remarks>
+        /// <param name="test">String do sprawdzenia czy zawiera się w docelowym stringu</param>
+        /// <param name="target">Docelowy string</param>
+        /// <returns> Zwraca true jeżeli test zawiera się w target.</returns>
         public static bool CheckString(string test, string target)
         {
             char[] tests = test.ToCharArray();
